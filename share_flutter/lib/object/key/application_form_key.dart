@@ -1,4 +1,4 @@
-class SeApplicationFormKey {
+class ApplicationFormKey {
   static const id = '_id';
   static const userId = 'userId';
   static const name = 'name';

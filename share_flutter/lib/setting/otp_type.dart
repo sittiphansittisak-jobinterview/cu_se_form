@@ -1,5 +1,5 @@
 class OtpType {
-  static const seApplicationForm = 'seApplicationForm';
+  static const applicationForm = 'applicationForm';
 
-  static bool isCorrect(value) => [seApplicationForm].contains(value);
+  static bool isCorrect(value) => [applicationForm].contains(value);
 }
