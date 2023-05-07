@@ -1,4 +1,4 @@
 class PagePath{
   static const  index = "/";
-  static const  seApplicationForm = "/seApplicationForm";
+  static const  applicationForm = "/applicationForm";
 }

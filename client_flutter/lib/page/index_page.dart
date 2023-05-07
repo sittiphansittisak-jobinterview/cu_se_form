@@ -15,12 +15,13 @@ class IndexPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const PreferredSizeWidget appBarWidget = AppBarWidget();
     const Widget topicWidget = TextWidget(text: "ยินดีต้อนรับสู่ CU SE", color: ColorStyle.light, fontSize: FontSizeStyle.large, isBold: true);
     const Widget subTopicWidget = TextWidget(text: "กรุณาเลือกแบบฟอร์มที่ต้องการสร้าง", color: ColorStyle.light, fontSize: FontSizeStyle.basic);
-    final Widget seApplicationFormMenuWidget = ImageCardWidget(title: 'แบบฟอร์มประกอบการสมัครหลักสูตร SE', bgColor: ColorStyle.seApplicationFormMenu, image: ImagePath.seApplicationFormMenu, onClick: () => Get.toNamed(PagePath.seApplicationForm));
+    final Widget applicationFormMenuWidget = ImageCardWidget(title: 'แบบฟอร์มประกอบการสมัครหลักสูตร SE', bgColor: ColorStyle.applicationFormMenu, image: ImagePath.applicationFormMenu, onClick: () => Get.toNamed(PagePath.applicationForm));
 
     return Scaffold(
-      appBar: const AppBarWidget(),
+      appBar: appBarWidget,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -43,16 +44,16 @@ class IndexPage extends StatelessWidget {
               SizedBoxStyle.heightBasic,
               Wrap(
                 children: [
-                  seApplicationFormMenuWidget,
-                  seApplicationFormMenuWidget,
-                  seApplicationFormMenuWidget,
-                  seApplicationFormMenuWidget,
-                  seApplicationFormMenuWidget,
-                  seApplicationFormMenuWidget,
-                  seApplicationFormMenuWidget,
-                  seApplicationFormMenuWidget,
-                  seApplicationFormMenuWidget,
-                  seApplicationFormMenuWidget,
+                  applicationFormMenuWidget,
+                  applicationFormMenuWidget,
+                  applicationFormMenuWidget,
+                  applicationFormMenuWidget,
+                  applicationFormMenuWidget,
+                  applicationFormMenuWidget,
+                  applicationFormMenuWidget,
+                  applicationFormMenuWidget,
+                  applicationFormMenuWidget,
+                  applicationFormMenuWidget,
                 ].map((e) => Padding(padding: SpaceStyle.allBasic, child: e)).toList(),
               ),
             ],
