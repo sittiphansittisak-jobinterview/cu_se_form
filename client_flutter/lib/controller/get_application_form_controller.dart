@@ -1,13 +1,13 @@
+import 'package:client_flutter/utility/my_alert_message.dart';
 import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/otp_object.dart';
 import 'package:share_flutter/private/object/api_object.dart';
 import 'package:share_flutter/private/path/api_path.dart';
 
 class GetApplicationFormController {
-  GetApplicationFormController(this.otpRequest);
+  GetApplicationFormController({required this.otpRequest});
 
   final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.getApplicationForm);
-  String? errorMessage;
 
   //request
   final OtpObject otpRequest;
@@ -28,9 +28,11 @@ class GetApplicationFormController {
   }
 
   String? receiveResponse() {
-    final applicationFormResponse = ApplicationFormObject()..map = api.data?['applicationForm'];
-    if (!applicationFormResponse.toObject()) return 'ข้อมูลที่ได้รับจากเซิฟเวอร์ไม่ถูกต้อง กรุณาแจ้งปัญหาได้ที่ https://github.com/sittiphansittisak-jobinterview/cu_se_form/issues';
-    this.applicationFormResponse = applicationFormResponse;
+    final map = api.data?['applicationForm'];
+    if (map is! Map<String, dynamic>) return 'ข้อมูลที่ได้รับจากเซิฟเวอร์ไม่ถูกต้อง ${MyAlertMessage.reportIssue}';
+    final ApplicationFormObject applicationForm = ApplicationFormObject()..map = map;
+    if (!applicationForm.toObject()) return 'ข้อมูลที่ได้รับจากเซิฟเวอร์ไม่ถูกต้อง ${MyAlertMessage.reportIssue}';
+    applicationFormResponse = applicationForm;
     return null;
   }
 }
