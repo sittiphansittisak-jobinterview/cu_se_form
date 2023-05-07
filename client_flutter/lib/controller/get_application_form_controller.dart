@@ -7,7 +7,7 @@ import 'package:share_flutter/private/path/api_path.dart';
 class GetApplicationFormController {
   GetApplicationFormController({required this.otpRequest});
 
-  final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.getApplicationForm);
+  final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.addApplicationForm);
 
   //request
   final OtpObject otpRequest;
@@ -16,8 +16,8 @@ class GetApplicationFormController {
   late final ApplicationFormObject applicationFormResponse;
 
   String? validateRequest() {
-    if (otpRequest.email == null) return 'ไม่พบข้อมูลอีเมล';
-    if (otpRequest.otpValue == null) return 'ไม่พบข้อมูล OTP';
+    if (otpRequest.email == null) return 'กรุณาเพิ่มข้อมูลอีเมล'; // bool isEmail(){}?
+    if (otpRequest.otpValue == null) return 'กรุณาเพิ่มข้อมูล OTP'; // bool isOtp(){}?
     return null;
   }
 

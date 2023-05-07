@@ -19,7 +19,7 @@ class SendOtpController {
 
   String? validateRequest() {
     if (!OtpType.isCorrect(otpRequest.type)) return 'ไม่พบข้อมูลชนิดของ OTP กรุณาแจ้งปัญหาได้ที่ ${MyAlertMessage.reportIssue}';
-    if (otpRequest.email == null) return 'ไม่พบข้อมูล OTP';
+    if (otpRequest.email == null) return 'กรุณาเพิ่มข้อมูลอีเมล';
     return null;
   }
 
