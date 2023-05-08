@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     Future.delayed(Duration.zero, () async {
       await CoverLoadingWidget.show(text: 'กำลังเตรียมความพร้อมของแอป....');
-      if (!await delayedFunction<bool>(function: initialBeforeAfterApp, milliseconds: 1000)) return await CoverLoadingWidget.showError(text: 'เตรียมความพร้อมของแอปไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+      if (!await delayedFunction<bool>(function: initialBeforeAfterApp)) return await CoverLoadingWidget.showError(text: 'เตรียมความพร้อมของแอปไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
       _isInitialSuccess.value = true;
       await CoverLoadingWidget.close();
     });

@@ -45,15 +45,6 @@ class IndexPage extends StatelessWidget {
               Wrap(
                 children: [
                   applicationFormMenuWidget,
-                  applicationFormMenuWidget,
-                  applicationFormMenuWidget,
-                  applicationFormMenuWidget,
-                  applicationFormMenuWidget,
-                  applicationFormMenuWidget,
-                  applicationFormMenuWidget,
-                  applicationFormMenuWidget,
-                  applicationFormMenuWidget,
-                  applicationFormMenuWidget,
                 ].map((e) => Padding(padding: SpaceStyle.allBasic, child: e)).toList(),
               ),
             ],

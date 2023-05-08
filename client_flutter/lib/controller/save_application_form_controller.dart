@@ -4,14 +4,14 @@ import 'package:share_flutter/object/otp_object.dart';
 import 'package:share_flutter/private/object/api_object.dart';
 import 'package:share_flutter/private/path/api_path.dart';
 
-class AddApplicationFormController {
-  AddApplicationFormController({required this.otpRequest});
+class SaveApplicationFormController {
+  SaveApplicationFormController({required this.otpRequest, required this.applicationFormRequest});
 
   final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.sendOtp);
 
   //request
   final OtpObject otpRequest;
-  final ApplicationFormObject applicationFormRequest = ApplicationFormObject();
+  final ApplicationFormObject applicationFormRequest;
 
   //response
 

@@ -5,19 +5,18 @@ import 'package:share_flutter/private/object/api_object.dart';
 import 'package:share_flutter/private/path/api_path.dart';
 
 class SendOtpController {
-  SendOtpController({required String type}) {
-    otpRequest.type = type;
-  }
+  SendOtpController({required String otpType, required this.otpRequest}) : _otpTypeRequest = otpType;
 
   final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.sendOtp);
 
   //request
-  final OtpObject otpRequest = OtpObject();
+  final String _otpTypeRequest;
+  final OtpObject otpRequest;
 
   //response
   String? otpRefResponse;
 
-  String? validateRequest() => sendOtpRequestValidation(otp: otpRequest);
+  String? validateRequest() => sendOtpRequestValidation(otp: otpRequest..type = _otpTypeRequest);
 
   Future<bool> sendRequest() async {
     api.parameterBody.addAll({'type': otpRequest.type, 'email': otpRequest.email});

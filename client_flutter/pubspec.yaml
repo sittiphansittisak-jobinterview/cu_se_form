@@ -56,6 +56,7 @@ dependencies:
   syncfusion_flutter_sliders: ^20.3.61
   flutter_easyloading: ^3.0.5
   url_strategy: ^0.2.0
+  mongo_dart: ^0.9.1
 
 dev_dependencies:
   flutter_test:

@@ -43,7 +43,7 @@ class _SendOtpViewState extends State<SendOtpView> {
   Widget build(BuildContext context) {
     final List<Widget> widgetList = widget.controller.otpRefResponse != null ? [SizedBoxStyle.heightTiny, _otpRefWidgetBuilder()] : [];
     return FormCardWidget(
-      title: 'ตรวจสอบความปลอดภัยด้วย OTP',
+      title: 'ตรวจสอบข้อมูลผู้ใช้ด้วย OTP',
       childrenList: [
         [
           Column(children: [_emailFieldWidget, ...widgetList]),
