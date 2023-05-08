@@ -1,4 +1,5 @@
-import 'package:client_flutter/utility/my_alert_message.dart';
+import 'package:share_flutter/request_validation/get_application_form_request_validation.dart';
+import 'package:share_flutter/utility/my_alert_message.dart';
 import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/otp_object.dart';
 import 'package:share_flutter/private/object/api_object.dart';
@@ -15,11 +16,7 @@ class GetApplicationFormController {
   //response
   late final ApplicationFormObject applicationFormResponse;
 
-  String? validateRequest() {
-    if (otpRequest.email == null) return 'กรุณาเพิ่มข้อมูลอีเมล'; // bool isEmail(){}?
-    if (otpRequest.otpValue == null) return 'กรุณาเพิ่มข้อมูล OTP'; // bool isOtp(){}?
-    return null;
-  }
+  String? validateRequest() => getApplicationFormRequestValidation(otp: otpRequest);
 
   Future<bool> sendRequest() async {
     api.parameterBody.addAll({'email': otpRequest.email, 'otpValue': otpRequest.otpValue});

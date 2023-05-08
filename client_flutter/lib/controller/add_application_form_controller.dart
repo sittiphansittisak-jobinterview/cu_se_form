@@ -1,4 +1,5 @@
-import 'package:client_flutter/utility/my_alert_message.dart';
+import 'package:share_flutter/request_validation/add_application_form_request_validation.dart';
+import 'package:share_flutter/utility/my_alert_message.dart';
 import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/otp_object.dart';
 import 'package:share_flutter/private/object/api_object.dart';
@@ -16,23 +17,7 @@ class AddApplicationFormController {
 
   //response
 
-  String? validateRequest() {
-    bool isStringEmpty(String? string) => (string ?? '').trim().isEmpty;
-    if (otpRequest.email == null) return 'กรุณาเพิ่มข้อมูลอีเมล'; // bool isEmail(){}?
-    if (otpRequest.otpValue == null) return 'กรุณาเพิ่มข้อมูล OTP'; // bool isOtp(){}?
-    if (isStringEmpty(applicationFormRequest.name)) return 'กรุณาเพิ่มข้อมูลชื่อ';
-    if (isStringEmpty(applicationFormRequest.surname)) return 'กรุณาเพิ่มข้อมูลนามสกุุล';
-    if (isStringEmpty(applicationFormRequest.studyType)) return 'กรุณาเพิ่มข้อมูลภาคเรียน';
-    if (isStringEmpty(applicationFormRequest.studyPlan)) return 'กรุณาเพิ่มข้อมูลแผนการเรียน';
-    if (applicationFormRequest.hasPublishedPaper == null) return 'กรุณาเพิ่มข้อมูลว่าเคยตีพิมพ์บทความวิชาการหรือไม่';
-    if (isStringEmpty(applicationFormRequest.researchInterests)) return 'กรุณาเพิ่มข้อมูลด้านที่อยากทำวิทยานิพนธ์/โครงงานมหาบัณฑิต';
-    if ([applicationFormRequest.proposedResearchMethodologyList ?? []].isEmpty) return 'กรุณาเพิ่มข้อมูลหัวข้อวิทยานิพนธ์/โครงงานมหาบัณฑิตที่ต้องการทำอย่างน้อย 1 รายการ';
-    for (final proposedResearchMethodology in applicationFormRequest.proposedResearchMethodologyList!) {
-      if (isStringEmpty(proposedResearchMethodology)) return 'กรุณาเพิ่มข้อมูลรายละเอียดของหัวข้อวิทยานิพนธ์/โครงงานมหาบัณฑิตที่ต้องการทำ';
-    }
-    if (!applicationFormRequest.toMap()) return 'ระบบไม่สามารถแปลงข้อมูลได้ กรุณาลองใหม่อีกครั้ง';
-    return null;
-  }
+  String? validateRequest() => addApplicationFormRequestValidation(otp: otpRequest, applicationForm: applicationFormRequest);
 
   Future<bool> sendRequest() async {
     api.parameterBody.addAll({'email': otpRequest.email, 'otpValue': otpRequest.otpValue, 'applicationForm': applicationFormRequest.map});

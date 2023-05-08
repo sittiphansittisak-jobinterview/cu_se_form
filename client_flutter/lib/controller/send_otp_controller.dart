@@ -1,8 +1,8 @@
-import 'package:client_flutter/utility/my_alert_message.dart';
+import 'package:share_flutter/request_validation/send_otp_request_validation.dart';
+import 'package:share_flutter/utility/my_alert_message.dart';
 import 'package:share_flutter/object/otp_object.dart';
 import 'package:share_flutter/private/object/api_object.dart';
 import 'package:share_flutter/private/path/api_path.dart';
-import 'package:share_flutter/setting/otp_type.dart';
 
 class SendOtpController {
   SendOtpController({required String type}) {
@@ -17,11 +17,7 @@ class SendOtpController {
   //response
   late final String otpRefResponse;
 
-  String? validateRequest() {
-    if (!OtpType.isCorrect(otpRequest.type)) return 'ไม่พบข้อมูลชนิดของ OTP กรุณาแจ้งปัญหาได้ที่ ${MyAlertMessage.reportIssue}';
-    if (otpRequest.email == null) return 'กรุณาเพิ่มข้อมูลอีเมล';
-    return null;
-  }
+  String? validateRequest() => sendOtpRequestValidation(otp: otpRequest);
 
   Future<bool> sendRequest() async {
     api.parameterBody.addAll({'type': otpRequest.type, 'email': otpRequest.email});
