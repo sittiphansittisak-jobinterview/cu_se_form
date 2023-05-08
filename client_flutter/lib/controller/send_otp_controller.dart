@@ -15,7 +15,7 @@ class SendOtpController {
   final OtpObject otpRequest = OtpObject();
 
   //response
-  late final String otpRefResponse;
+  String? otpRefResponse;
 
   String? validateRequest() => sendOtpRequestValidation(otp: otpRequest);
 
@@ -26,6 +26,7 @@ class SendOtpController {
   }
 
   String? receiveResponse() {
+    otpRefResponse = null;
     final otpRef = api.data?['otpRef'];
     if (otpRef is! String) return 'ข้อมูลที่ได้รับจากเซิฟเวอร์ไม่ถูกต้อง ${MyAlertMessage.reportIssue}';
     otpRefResponse = otpRef;

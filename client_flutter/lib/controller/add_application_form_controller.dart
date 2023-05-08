@@ -1,10 +1,8 @@
 import 'package:share_flutter/request_validation/add_application_form_request_validation.dart';
-import 'package:share_flutter/utility/my_alert_message.dart';
 import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/otp_object.dart';
 import 'package:share_flutter/private/object/api_object.dart';
 import 'package:share_flutter/private/path/api_path.dart';
-import 'package:share_flutter/setting/otp_type.dart';
 
 class AddApplicationFormController {
   AddApplicationFormController({required this.otpRequest});

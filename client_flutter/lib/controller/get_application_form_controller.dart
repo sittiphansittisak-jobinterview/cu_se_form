@@ -14,7 +14,7 @@ class GetApplicationFormController {
   final OtpObject otpRequest;
 
   //response
-  late final ApplicationFormObject applicationFormResponse;
+  ApplicationFormObject? applicationFormResponse;
 
   String? validateRequest() => getApplicationFormRequestValidation(otp: otpRequest);
 
@@ -25,6 +25,7 @@ class GetApplicationFormController {
   }
 
   String? receiveResponse() {
+    applicationFormResponse = null;
     final map = api.data?['applicationForm'];
     if (map is! Map<String, dynamic>) return 'ข้อมูลที่ได้รับจากเซิฟเวอร์ไม่ถูกต้อง ${MyAlertMessage.reportIssue}';
     final ApplicationFormObject applicationForm = ApplicationFormObject()..map = map;
