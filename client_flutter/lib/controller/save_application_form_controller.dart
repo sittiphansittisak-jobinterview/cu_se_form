@@ -1,6 +1,6 @@
 import 'package:share_flutter/object/key/otp_key.dart';
 import 'package:share_flutter/private/utility/map_filter.dart';
-import 'package:share_flutter/request_validation/add_application_form_request_validation.dart';
+import 'package:share_flutter/request_validation/save_application_form_request_validation.dart';
 import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/otp_object.dart';
 import 'package:share_flutter/private/object/api_object.dart';
@@ -17,7 +17,7 @@ class SaveApplicationFormController {
 
   //response
 
-  String? validateRequest() => addApplicationFormRequestValidation(otp: otpRequest, applicationForm: applicationFormRequest);
+  String? validateRequest() => saveApplicationFormRequestValidation(otp: otpRequest, applicationForm: applicationFormRequest);
 
   Future<bool> sendRequest() async {
     if (!otpRequest.toMap() || !applicationFormRequest.toMap()) return false;
