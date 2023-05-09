@@ -23,7 +23,7 @@ class SendOtpView extends StatefulWidget {
 
 class _SendOtpViewState extends State<SendOtpView> {
   Widget _otpRefWidgetBuilder() => TextWidget(text: 'รหัสอ้างอิง:${widget.controller.otpRefResponse}', fontSize: FontSizeStyle.small, color: ColorStyle.accent);
-  late final Widget _emailFieldWidget = EmailFieldWidget(title: 'อีเมล', hint: 'สำหรับตรวจสอบ OTP', onChange: (value) => widget.controller.otpRequest.email = value);
+  late final Widget _emailFieldWidget = EmailFieldWidget(title: 'อีเมล', hint: 'สำหรับตรวจสอบ OTP', initialValue: widget.controller.otpRequest.email, onChange: (value) => widget.controller.otpRequest.email = value);
   late final Widget _sendOtpButtonWidget = Padding(
       padding: SpaceStyle.allSmall,
       child: DenseButtonWidget(
@@ -43,6 +43,7 @@ class _SendOtpViewState extends State<SendOtpView> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> widgetList = widget.controller.otpRefResponse != null ? [SizedBoxStyle.heightTiny, _otpRefWidgetBuilder()] : [];
+
     return FormCardWidget(
       title: 'ตรวจสอบข้อมูลผู้ใช้ด้วย OTP',
       childrenList: [

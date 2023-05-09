@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:share_flutter/utility/delay_function.dart';
+import 'package:share_flutter/utility/delay_future_function.dart';
 
 void main() async {
   initialBeforeStartApp();
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     Future.delayed(Duration.zero, () async {
       await CoverLoadingWidget.show(text: 'กำลังเตรียมความพร้อมของแอป....');
-      if (!await delayedFunction<bool>(function: initialBeforeAfterApp)) return await CoverLoadingWidget.showError(text: 'เตรียมความพร้อมของแอปไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+      if (!await delayedFutureFunction<bool>(function: initialBeforeAfterApp)) return await CoverLoadingWidget.showError(text: 'เตรียมความพร้อมของแอปไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
       _isInitialSuccess.value = true;
       await CoverLoadingWidget.close();
     });

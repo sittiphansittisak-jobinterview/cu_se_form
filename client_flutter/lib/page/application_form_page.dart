@@ -28,10 +28,12 @@ class ApplicationFormPage extends StatefulWidget {
 
 class _ApplicationFormPageState extends State<ApplicationFormPage> {
   //basic
+  bool _isInitialPageFinished = false;
   final Rx<bool> _isApplicationFormLoading = Rx(false);
   final BoxConstraints _formWidth = const BoxConstraints(maxWidth: 210.0 * 2.83);
   final PreferredSizeWidget _appBarWidget = const AppBarWidget(url: PagePath.index);
   final Widget _drawerWidget = const DrawerWidget();
+  final Widget _preparePageLoadingWidget = const CircularLoadingWidget(title: 'กำลังเตรียมข้อมูลสำหรับเริ่มต้อน....');
   final Widget _titleWidget = const TextWidget(text: 'แบบฟอร์มประกอบการสมัครหลักสูตร SE', isBold: true, fontSize: FontSizeStyle.big);
   final Widget _subTitleWidget = const TextWidget(text: 'กรุณาใช้รหัส OTP ในการค้นหาหรือบันทึกแบบฟอร์ม โดยรหัส OTP มีอายุการใช้งาน 5 นาที', fontSize: FontSizeStyle.basic);
   final Widget _dividerWidget = const Divider(color: ColorStyle.primary);
@@ -76,6 +78,16 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
       });
 
   @override
+  void initState() {
+    super.initState();
+    () async {
+      await _sendOtpController.initialRequest();
+      _isInitialPageFinished = true;
+      setState(() {});
+    }();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBarWidget,
@@ -83,31 +95,33 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
       body: SingleChildScrollView(
         padding: SpaceStyle.allBasic,
         child: Center(
-          child: Column(
-            children: [
-              SizedBoxStyle.heightLarge,
-              _titleWidget,
-              _subTitleWidget,
-              SizedBoxStyle.heightSmall,
-              ConstrainedBox(
-                constraints: _formWidth,
-                child: Column(
+          child: !_isInitialPageFinished
+              ? _preparePageLoadingWidget
+              : Column(
                   children: [
-                    _sendOtpView,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _getApplicationFormButtonWidget,
-                        _saveApplicationFormButtonWidget,
-                      ],
+                    SizedBoxStyle.heightLarge,
+                    _titleWidget,
+                    _subTitleWidget,
+                    SizedBoxStyle.heightSmall,
+                    ConstrainedBox(
+                      constraints: _formWidth,
+                      child: Column(
+                        children: [
+                          _sendOtpView,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _getApplicationFormButtonWidget,
+                              _saveApplicationFormButtonWidget,
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
+                    Padding(padding: SpaceStyle.verticalBasic, child: _dividerWidget),
+                    ConstrainedBox(constraints: _formWidth, child: Obx(() => _isApplicationFormLoading.value ? _loadingWidget : _applicationFormView)),
                   ],
                 ),
-              ),
-              Padding(padding: SpaceStyle.verticalBasic, child: _dividerWidget),
-              ConstrainedBox(constraints: _formWidth, child: Obx(() => _isApplicationFormLoading.value ? _loadingWidget : _applicationFormView)),
-            ],
-          ),
         ),
       ),
     );
