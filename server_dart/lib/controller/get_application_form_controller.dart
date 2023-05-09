@@ -1,26 +1,29 @@
+import 'package:server_dart/model/application_form_model.dart';
 import 'package:server_dart/model/otp_model.dart';
+import 'package:server_dart/model/user_model.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
-import 'package:server_dart/private/utility/generate_otp_ref.dart';
-import 'package:server_dart/private/utility/generate_otp_value.dart';
 import 'package:server_dart/private/utility/request_to_api.dart';
-import 'package:server_dart/private/utility/send_email_function.dart';
-import 'package:share_flutter/setting/otp_type.dart';
+import 'package:share_flutter/object/application_form_object.dart';
+import 'package:share_flutter/object/user_object.dart';
+import 'package:share_flutter/request_validation/get_application_form_request_validation.dart';
+import 'package:share_flutter/utility/my_alert_message.dart';
 import 'package:shelf/shelf.dart';
 import 'package:share_flutter/object/otp_object.dart';
-import 'package:share_flutter/request_validation/send_otp_request_validation.dart';
 
-class SendOtpController {
-  SendOtpController({required Request request}) : _request = request;
+class GetApplicationFormController {
+  GetApplicationFormController({required Request request}) : _request = request;
 
   final Request _request;
   final Mongodb _mongodb = Mongodb();
+  final UserObject _user = UserObject();
 
   //request
   final OtpObject _otpRequest = OtpObject();
 
   //response
   String? messageResponse;
-  String? otpRefResponse;
+  OtpObject otpResponse = OtpObject();
+  ApplicationFormObject applicationFormResponse = ApplicationFormObject();
 
   Future<bool> receiveRequest() async {
     final api = await requestToApi(_request);
@@ -33,43 +36,70 @@ class SendOtpController {
   }
 
   Future<bool> validateRequest() async {
-    if ((messageResponse = sendOtpRequestValidation(otp: _otpRequest)) != null) return messageResponse == null;
-    final DateTime beforeExpire5Min = DateTime.now().toUtc().subtract(Duration(minutes: 5));
-    await _mongodb.openDb();
-    final int countBeforeExpire = await OtpModel.countBeforeExpire(_mongodb, email: _otpRequest.email!, expireAt: beforeExpire5Min);
-    await _mongodb.closeDb();
-    if (countBeforeExpire >= 3) return (messageResponse = 'มีการขอส่ง OTP มากเกินไป โปรดรอสักครู่แล้วลองอีกครั้ง') == null; //prevent spammer
+    if ((messageResponse = getApplicationFormRequestValidation(otp: _otpRequest)) != null) return messageResponse == null;
     return true;
   }
 
-  Future<bool> insertOtp() async {
-    final DateTime now = DateTime.now().toUtc();
-    _otpRequest.createAt = now;
-    _otpRequest.expireAt = now.add(Duration(minutes: 5));
-    _otpRequest.isUsed = false;
-    _otpRequest.otpRef = otpRefResponse = generateOtpRef();
-    _otpRequest.otpValue = generateOtpValue();
-    if (!_otpRequest.toMap()) return (messageResponse = 'เกิดข้อผิดพลาดระหว่างเตรียมข้อมูลสำหรับบันทึก OTP') == null;
+  Future<bool> findOtp() async {
     await _mongodb.openDb();
-    _otpRequest.id = await OtpModel.insertOne(_mongodb, map: _otpRequest.map!);
+    otpResponse.map = await OtpModel.findOneByOtp(_mongodb, type: _otpRequest.type!, email: _otpRequest.email!, otpRef: _otpRequest.otpRef!);
     await _mongodb.closeDb();
-    if (_otpRequest.id == null) return (messageResponse = 'เกิดข้อผิดพลาดระหว่างบันทึก OTP') == null;
+    if (otpResponse.map == null) return (messageResponse = 'ไม่พบข้อมูล OTP') == null;
+    otpResponse.toObject();
     return true;
   }
 
-  Future<bool> insertOtpCancel() async {
+  Future<bool> validateOtp() async {
+    if (otpResponse.isUsed == true) return (messageResponse = 'OTP นี้ถูกใช้แล้ว') == null;
+    if (otpResponse.isExpired) return (messageResponse = 'OTP หมดอายุแล้ว') == null;
+    if (otpResponse.otpValue != _otpRequest.otpValue) return (messageResponse = 'รหัส OTP ไม่ถูกต้อง') == null;
+    return true;
+  }
+
+  Future<bool> findUser() async {
     await _mongodb.openDb();
-    if (!await OtpModel.removeOne(_mongodb, id: _otpRequest.id!)) return false;
+    _user.map = await UserModel.findOneByEmail(_mongodb, email: _otpRequest.email!);
+    await _mongodb.closeDb();
+    if (_user.map == null) return (messageResponse = 'ไม่พบข้อมูลบัญชี/ใบงาน \n${MyAlertMessage.reportIssue}') == null; //No forms can exist if the user doesn't exist, since a form can only be created by a user
+    _user.toObject();
+    return true;
+  }
+
+  Future<bool> findApplicationForm() async {
+    await _mongodb.openDb();
+    applicationFormResponse.map = await ApplicationFormModel.findOneByUserId(_mongodb, userId: _user.id!);
+    await _mongodb.closeDb();
+    if (applicationFormResponse.map == null) return (messageResponse = 'ไม่พบข้อมูลบัญชี/ใบงาน \n${MyAlertMessage.reportIssue}') == null; //No forms can exist if the user doesn't exist, since a form can only be created by a user
+    applicationFormResponse
+      ..toObject()
+      ..toMap(); //reformat
+    return true;
+  }
+
+/* Future<bool> insertUser() async {
+    _user.createAt = DateTime.now().toUtc();
+    _user.email = _otpRequest.email;
+    if (!_user.toMap() || _user.map == null) return (messageResponse = 'เกิดข้อผิดพลาดระหว่างเตรียมข้อมูลเพื่อเพิ่มบัญชีผู้ใช้ \n${MyAlertMessage.reportIssue}') == null; //worst case
+    await _mongodb.openDb();
+    _user.id = await UserModel.insertOne(_mongodb, map: _user.map!);
+    if (_user.id == null) return (messageResponse = 'เกิดข้อผิดพลาดระหว่างเพิ่มข้อมูลบัญชีผู้ใช้  \n${MyAlertMessage.reportIssue}') == null; //worst case
     await _mongodb.closeDb();
     return true;
   }
 
-  Future<bool> sendEmail() async {
-    final String subject = 'รหัส OTP';
-    final String body = 'ใช้สำหรับยืนยันตัวตนเพื่อ${OtpType.toThai(_otpRequest.type)}'
-        '\nรหัสอ้างอิง: ${_otpRequest.otpRef}'
-        '\nรหัส OTP: ${_otpRequest.otpValue}';
-    if (!await sendEmailFunction(emailTarget: _otpRequest.email, subject: subject, body: body)) return (messageResponse = 'ส่งอีเมลไม่สำเร็จ') == null;
+  Future<bool> insertUserCancel() async {
+    await _mongodb.openDb();
+    if (!await UserModel.removeOne(_mongodb, id: _user.id!)) return false;
+    await _mongodb.closeDb();
     return true;
   }
+
+  Future<bool> sendEmailForNewUser() async {
+    final String subject = 'สมาชิกใหม่';
+    final String body = 'ยินดีต้อนรับสมาชิกใหม่เข้าสู่ CU SE FORM'
+        '\nเราพบว่าคุณพึ่งเข้าร่วม CU SE FORM เมื่อ ${thaiDateTime(_user.createAt) ?? '-'}'
+        '\nหากนี่ไม่ใช่คุณ ${MyAlertMessage.reportIssue}';
+    if (!await sendEmailFunction(emailTarget: _otpRequest.email, subject: subject, body: body)) return (messageResponse = 'ส่งอีเมลแจ้งสมาชิกใหม่ไม่สำเร็จ') == null;
+    return true;
+  }*/
 }
