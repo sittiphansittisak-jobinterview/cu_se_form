@@ -1,6 +1,6 @@
 # client_flutter
 
-cu se form for job interview
+CU SE form for job interview
 
 ## Getting Started
 
