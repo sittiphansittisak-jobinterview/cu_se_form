@@ -5,6 +5,7 @@ import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/otp_object.dart';
 import 'package:share_flutter/private/object/api_object.dart';
 import 'package:share_flutter/private/path/api_path.dart';
+import 'package:share_flutter/utility/delay_future_function.dart';
 
 class SaveApplicationFormController {
   SaveApplicationFormController({required this.otpRequest, required this.applicationFormRequest});
@@ -24,7 +25,7 @@ class SaveApplicationFormController {
     otpRequest.map = mapFilter(otpRequest.map, allowKey: [OtpKey.email, OtpKey.otpRef, OtpKey.otpValue]);
     if (otpRequest.map == null) return false;
     api.parameterBody.addAll({'otp': otpRequest.map, 'applicationForm': applicationFormRequest.map});
-    if (!await api.sendPostFormDataRequest()) return false;
+    if (!await delayedFutureFunction(function: api.sendPostFormDataRequest)) return false;
     return true;
   }
 }
