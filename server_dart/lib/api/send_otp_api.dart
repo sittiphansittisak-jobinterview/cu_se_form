@@ -10,7 +10,7 @@ Future<Response> sendOtpApi(Request request) async {
     if (!await controller.receiveRequest()) return generateResponse(message: 'ข้อมูลที่ได้รับไม่ถูกต้อง');
     if (!await controller.validateRequest()) return generateResponse(message: controller.messageResponse);
     if (!await controller.insertOtp()) return generateResponse(httpStatus: HttpStatus.internalServerError, message: controller.messageResponse);
-    if (!await controller.sendEmail()) {
+    if (!await controller.sendOtpByEmail()) {
       if (!await controller.insertOtpCancel()) return generateResponse(httpStatus: HttpStatus.internalServerError, message: 'เพิ่มข้อมูล OTP ลงในระบบแล้ว แต่ส่งอีเมลไม่สำเร็จ กรุณาตรวจสอบอีเมล'); //worst case
       return generateResponse(httpStatus: HttpStatus.internalServerError, message: controller.messageResponse);
     }

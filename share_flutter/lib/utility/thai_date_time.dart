@@ -15,9 +15,10 @@ const List<String> _thaiMonthList = [
 
 String? thaiDateTime(DateTime? dateTime, {bool showDate = true, bool showTime = true}) {
   try {
+    if (dateTime == null) return null;
     String date = '';
     String time = '';
-    List<String> datetimeList = dateTime.toString().split(" ");
+    List<String> datetimeList = dateTime.toLocal().toString().split(" ");
     if (showDate) {
       List<String> dateList = datetimeList[0].split("-");
       int yearEN = int.parse(dateList[0]);

@@ -1,7 +1,7 @@
 import 'package:server_dart/model/otp_model.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
 import 'package:server_dart/private/utility/request_to_api.dart';
-import 'package:server_dart/private/utility/send_email_function.dart';
+import 'package:server_dart/private/utility/send_email.dart';
 import 'package:share_flutter/utility/thai_date_time.dart';
 import 'package:shelf/shelf.dart';
 import 'package:share_flutter/object/otp_object.dart';
@@ -64,12 +64,12 @@ class SendOtpController {
     return true;
   }
 
-  Future<bool> sendEmail() async {
+  Future<bool> sendOtpByEmail() async {
     final String subject = 'รหัส OTP';
     final String body = 'รหัสอ้างอิง: ${_otpRequest.otpRef}'
         '\nรหัส OTP: ${_otpRequest.otpValue}'
         '\nรหัสจะหมดอายุเมื่อ ${thaiDateTime(_otpRequest.expireAt) ?? '-'} (มีอายุการใช้งาน $_delayBeforeExpire นาที)';
-    if (!await sendEmailFunction(emailTarget: _otpRequest.email, subject: subject, body: body)) return (messageResponse = 'ส่งอีเมลไม่สำเร็จ') == null;
+    if (!await sendEmail(emailTarget: _otpRequest.email, subject: subject, body: body)) return (messageResponse = 'ส่งอีเมลไม่สำเร็จ') == null;
     return true;
   }
 }

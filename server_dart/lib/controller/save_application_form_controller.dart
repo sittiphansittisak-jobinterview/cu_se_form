@@ -3,7 +3,7 @@ import 'package:server_dart/model/otp_model.dart';
 import 'package:server_dart/model/user_model.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
 import 'package:server_dart/private/utility/request_to_api.dart';
-import 'package:server_dart/private/utility/send_email_function.dart';
+import 'package:server_dart/private/utility/send_email.dart';
 import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/user_object.dart';
 import 'package:share_flutter/request_validation/save_application_form_request_validation.dart';
@@ -80,12 +80,12 @@ class SaveApplicationFormController {
     return true;
   }
 
-  Future<bool> sendEmailForNewUser() async {
+  Future<bool> sendEmailToNewUser() async {
     final String subject = 'สมาชิกใหม่';
     final String body = 'ยินดีต้อนรับสมาชิกใหม่เข้าสู่ CU SE FORM'
         '\nเราพบว่าคุณพึ่งเข้าร่วม CU SE FORM เมื่อ ${thaiDateTime(_user.createAt) ?? '-'}'
         '\n\n*****หากนี่ไม่ใช่คุณ ${MyAlertMessage.reportIssue}*****';
-    if (!await sendEmailFunction(emailTarget: _otpRequest.email, subject: subject, body: body)) return (messageResponse = 'ส่งอีเมลแจ้งการเป็นสมาชิกใหม่ไม่สำเร็จ') == null;
+    if (!await sendEmail(emailTarget: _otpRequest.email, subject: subject, body: body)) return (messageResponse = 'ส่งอีเมลแจ้งการเป็นสมาชิกใหม่ไม่สำเร็จ') == null;
     return true;
   }
 

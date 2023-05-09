@@ -13,7 +13,7 @@ Future<Response> saveApplicationFormApi(Request request) async {
     if (!await controller.validateOtp()) return generateResponse(message: controller.messageResponse);
     if (!await controller.findUser()) {
       if (!await controller.insertUser()) return generateResponse(httpStatus: HttpStatus.internalServerError, message: controller.messageResponse);
-      isSendEmailSuccess = await controller.sendEmailForNewUser();
+      isSendEmailSuccess = await controller.sendEmailToNewUser();
       if (!isSendEmailSuccess && await controller.insertUserCancel()) return generateResponse(httpStatus: HttpStatus.internalServerError, message: controller.messageResponse);
     }
     final String message = isSendEmailSuccess == null ? '' : '\nยินดีต้อนรับสมาชิกใหม่${isSendEmailSuccess ? '(ระบบได้ส่งอีเมลแจ้งการเป็นสมาชิกใหม่ให้แล้ว)' : '(ระบบส่งอีเมลแจ้งการเป็นสมาชิกใหม่ไม่สำเร็จ)'}';
