@@ -62,7 +62,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
       });
 
   //controller
-  final OtpObject _otp = OtpObject(type: OtpType.addApplicationForm);
+  final OtpObject _otp = OtpObject(type: OtpType.saveApplicationForm);
   final ApplicationFormObject _applicationForm = ApplicationFormObject();
   late final SendOtpController _sendOtpController = SendOtpController(otpType: _otp.type!, otpRequest: _otp);
   late final GetApplicationFormController _getApplicationFormController = GetApplicationFormController(otpRequest: _otp);

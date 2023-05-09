@@ -34,7 +34,7 @@ class _SendOtpViewState extends State<SendOtpView> {
             if (!await widget.controller.sendRequest()) return await AwesomeDialogWidget.failed(detail: widget.controller.api.message);
             errorMessage = widget.controller.receiveResponse();
             if (errorMessage != null) return await AwesomeDialogWidget.error(detail: errorMessage);
-            await AwesomeDialogWidget.success(detail: 'ระบบได้ส่งอีเมลไปที่อีเมลของท่านแล้ว (รหัสอ้างอิง:${widget.controller.otpRefResponse})');
+            await AwesomeDialogWidget.success(detail: 'ระบบได้ส่งรหัส OTP ไปยังอีเมลของท่านแล้ว\n(รหัสอ้างอิง:${widget.controller.otpRefResponse})');
             setState(() {});
           }));
   late final _otpValueFieldWidget = TextFieldWidget(title: 'รหัส OTP', initialValue: widget.controller.otpRequest.otpValue, onChange: (value) => widget.controller.otpRequest.otpValue = value);

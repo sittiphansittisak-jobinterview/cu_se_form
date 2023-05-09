@@ -49,8 +49,8 @@ class OtpObject extends ObjectConverterAbstract {
     if (map == null) return false;
     try {
       id = map![OtpKey.id] == null ? null : ObjectId.parse(map![OtpKey.id]);
-      createAt = DateTime.tryParse(map![OtpKey.createAt]);
-      expireAt = DateTime.tryParse(map![OtpKey.expireAt]);
+      createAt = map![OtpKey.createAt] == null ? null : DateTime.tryParse(map![OtpKey.createAt]);
+      expireAt = map![OtpKey.expireAt] == null ? null : DateTime.tryParse(map![OtpKey.expireAt]);
       type = map![OtpKey.type];
       email = map![OtpKey.email];
       isUsed = map![OtpKey.isUsed];

@@ -1,9 +1,10 @@
 import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/otp_object.dart';
+import 'package:share_flutter/utility/is_email.dart';
 
 String? addApplicationFormRequestValidation({required OtpObject otp, required ApplicationFormObject applicationForm}) {
-  if (otp.email == null) return 'กรุณาเพิ่มข้อมูลอีเมล'; // bool isEmail(){}?
-  if (otp.otpValue == null) return 'กรุณาเพิ่มข้อมูล OTP (ได้จากการส่งรหัส OTP ไปที่อีเมล)'; // bool isOtp(){}?
+  if (!isEmail(otp.email)) return 'กรุณาเพิ่มข้อมูลอีเมลให้ถูกต้อง';
+  if (otp.otpValue == null) return 'กรุณาเพิ่มข้อมูล OTP ให้ถูกต้อง (ได้จากการส่งรหัส OTP ไปที่อีเมล)'; // bool isOtp(){}?
   if (_isStringEmpty(applicationForm.name)) return 'กรุณาเพิ่มข้อมูลชื่อ';
   if (_isStringEmpty(applicationForm.surname)) return 'กรุณาเพิ่มข้อมูลนามสกุุล';
   if (_isStringEmpty(applicationForm.studyType)) return 'กรุณาเพิ่มข้อมูลภาคเรียน';
@@ -14,7 +15,6 @@ String? addApplicationFormRequestValidation({required OtpObject otp, required Ap
   for (final proposedResearchMethodology in applicationForm.proposedResearchMethodologyList!) {
     if (_isStringEmpty(proposedResearchMethodology)) return 'กรุณาเพิ่มข้อมูลรายละเอียดของหัวข้อวิทยานิพนธ์/โครงงานมหาบัณฑิตที่ต้องการทำ';
   }
-  if (!applicationForm.toMap()) return 'ระบบไม่สามารถแปลงข้อมูลได้ กรุณาลองใหม่อีกครั้ง';
   return null;
 }
 

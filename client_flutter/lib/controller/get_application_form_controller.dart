@@ -1,3 +1,5 @@
+import 'package:share_flutter/object/key/otp_key.dart';
+import 'package:share_flutter/private/utility/map_filter.dart';
 import 'package:share_flutter/request_validation/get_application_form_request_validation.dart';
 import 'package:share_flutter/utility/my_alert_message.dart';
 import 'package:share_flutter/object/application_form_object.dart';
@@ -19,7 +21,10 @@ class GetApplicationFormController {
   String? validateRequest() => getApplicationFormRequestValidation(otp: otpRequest);
 
   Future<bool> sendRequest() async {
-    api.parameterBody.addAll({'email': otpRequest.email, 'otpValue': otpRequest.otpValue});
+    if (!otpRequest.toMap()) return false;
+    otpRequest.map = mapFilter(otpRequest.map, allowKey: [OtpKey.email, OtpKey.otpRef, OtpKey.otpValue]);
+    if (otpRequest.map == null) return false;
+    api.parameterBody.addAll({'otp': otpRequest.map});
     if (!await api.sendPostFormDataRequest()) return false;
     return true;
   }
