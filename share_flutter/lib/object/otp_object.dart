@@ -12,7 +12,7 @@ class OtpObject extends ObjectConverterAbstract {
   String? otpRef;
   String? otpValue;
 
-  bool get isExpired => expireAt == null ? true : DateTime.now().toUtc().compareTo(expireAt!) > 0;
+  bool get isExpired => (expireAt?.compareTo(DateTime.now().toUtc()) ?? 0) <= 0;
 
   OtpObject({
     this.id,
