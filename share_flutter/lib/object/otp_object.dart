@@ -1,6 +1,7 @@
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:share_flutter/object/abstract/object_converter_abstract.dart';
 import 'package:share_flutter/object/key/otp_key.dart';
+import 'dart:math';
 
 class OtpObject extends ObjectConverterAbstract {
   ObjectId? id;
@@ -13,6 +14,33 @@ class OtpObject extends ObjectConverterAbstract {
   String? note;
 
   bool get isExpired => (expireAt?.compareTo(DateTime.now().toUtc()) ?? 0) <= 0;
+
+  bool get isOtpRefCorrect {
+    if (otpRef == null || otpRef!.length != 9) return false;
+    final List<String> otpRefParts = otpRef!.split('-');
+    if (otpRefParts.length != 2 || otpRefParts[0].length != 4 || otpRefParts[1].length != 4) return false;
+    final RegExp upperCaseRegex = RegExp(r'^[A-Z]{4}$');
+    final RegExp numberRegex = RegExp(r'^\d{4}$');
+    return upperCaseRegex.hasMatch(otpRefParts[0]) && numberRegex.hasMatch(otpRefParts[1]);
+  }
+
+  bool get isOtpValueCorrect {
+    final RegExp regex = RegExp(r'^\d{6}$');
+    return regex.hasMatch(otpValue ?? '');
+  }
+
+  void generateOtpRef() {
+    final random = Random();
+    final upperCaseLetterList = List.generate(4, (index) => random.nextInt(26) + 65); // generates uppercase letter code points
+    final numberCaseLetterList = List.generate(4, (index) => random.nextInt(10) + 48); // generates ASCII code points for digits 0-9
+    otpRef = '${String.fromCharCodes(upperCaseLetterList)}-${String.fromCharCodes(numberCaseLetterList)}';
+  }
+
+  void generateOtpValue() {
+    final random = Random();
+    final numberCaseLetterList = List.generate(6, (index) => random.nextInt(10) + 48); // generates ASCII code points for digits 0-9
+    otpValue = String.fromCharCodes(numberCaseLetterList);
+  }
 
   OtpObject({
     this.id,

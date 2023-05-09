@@ -1,7 +1,5 @@
 import 'package:server_dart/model/otp_model.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
-import 'package:server_dart/private/utility/generate_otp_ref.dart';
-import 'package:server_dart/private/utility/generate_otp_value.dart';
 import 'package:server_dart/private/utility/request_to_api.dart';
 import 'package:server_dart/private/utility/send_email_function.dart';
 import 'package:share_flutter/utility/thai_date_time.dart';
@@ -49,8 +47,8 @@ class SendOtpController {
     _otpRequest.createAt = now;
     _otpRequest.expireAt = now.add(Duration(minutes: _delayBeforeExpire));
     _otpRequest.isUsed = false;
-    _otpRequest.otpRef = otpRefResponse = generateOtpRef();
-    _otpRequest.otpValue = generateOtpValue();
+    otpRefResponse = (_otpRequest..generateOtpRef()).otpRef;
+    _otpRequest.generateOtpValue();
     if (!_otpRequest.toMap()) return (messageResponse = 'เกิดข้อผิดพลาดระหว่างเตรียมข้อมูลสำหรับบันทึก OTP') == null;
     await _mongodb.openDb();
     _otpRequest.id = await OtpModel.insertOne(_mongodb, map: _otpRequest.map!);
