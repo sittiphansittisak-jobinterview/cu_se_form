@@ -3,8 +3,8 @@ import 'package:server_dart/private/setting/mongodb.dart';
 import 'package:share_flutter/object/key/otp_key.dart';
 
 class OtpModel {
-  static Future<int> countBeforeExpire(Mongodb mongodb, {required String email, required DateTime expireAt}) async {
-    return await mongodb.otpCollection.count(where.eq(OtpKey.email, email).gt(OtpKey.expireAt, expireAt));
+  static Future<int> countBeforeBeforeCreate(Mongodb mongodb, {required String email, required DateTime createAt}) async {
+    return await mongodb.otpCollection.count(where.eq(OtpKey.email, email).gt(OtpKey.createAt, createAt));
   }
 
   static Future<ObjectId?> insertOne(Mongodb mongodb, {required Map<String, dynamic> map}) async {
@@ -19,8 +19,8 @@ class OtpModel {
     return true;
   }
 
-  static Future<bool> updateToUseOtp(Mongodb mongodb, {required String email, required String otpRef, required String otpValue, required DateTime expireAt}) async {
-    final WriteResult writeResult = await mongodb.otpCollection.updateOne(where.eq(OtpKey.email, email).eq(OtpKey.otpRef, otpRef).eq(OtpKey.otpValue, otpValue).eq(OtpKey.isUsed, false).gt(OtpKey.expireAt, expireAt), modify.set(OtpKey.isUsed, true));
+  static Future<bool> updateToUseOtp(Mongodb mongodb, {required String note, required String email, required String otpRef, required String otpValue, required DateTime expireAt}) async {
+    final WriteResult writeResult = await mongodb.otpCollection.updateOne(where.eq(OtpKey.email, email).eq(OtpKey.otpRef, otpRef).eq(OtpKey.otpValue, otpValue).eq(OtpKey.isUsed, false).gt(OtpKey.expireAt, expireAt), modify.set(OtpKey.isUsed, true).set(OtpKey.note, note));
     return writeResult.isSuccess && writeResult.nModified == 1;
   }
 }

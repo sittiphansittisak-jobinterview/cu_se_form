@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:server_dart/api/get_application_form_api.dart';
+import 'package:server_dart/api/save_application_form_api.dart';
 import 'package:server_dart/api/send_otp_api.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
 import 'package:share_flutter/private/path/api_path.dart';
@@ -29,6 +30,7 @@ final _staticHandler = shelf_static.createStaticHandler(FolderPath.rootPublic, d
 final _router = shelf_router.Router()
   ..post(ApiPath.sendOtp, sendOtpApi)
   ..post(ApiPath.getApplicationForm, getApplicationFormApi)
+  ..post(ApiPath.saveApplicationForm, saveApplicationFormApi)
   ..all('/<ignored|.*>', (Request request) {
     return Response.internalServerError();
   });

@@ -9,17 +9,11 @@ import 'package:shelf/shelf.dart';
 Future<Response> getApplicationFormApi(Request request) async {
   final GetApplicationFormController controller = GetApplicationFormController(request: request);
   try {
-    print(1);
-    if (!await controller.receiveRequest()) return generateResponse(message: controller.messageResponse);
-    print(2);
+    if (!await controller.receiveRequest()) return generateResponse(message: 'ข้อมูลที่ได้รับไม่ถูกต้อง');
     if (!await controller.validateRequest()) return generateResponse(message: controller.messageResponse);
-    print(3);
     if (!await controller.validateOtp()) return generateResponse(message: controller.messageResponse);
-    print(4);
     if (!await controller.findUser()) return generateResponse(message: controller.messageResponse);
-    print(5);
     if (!await controller.findApplicationForm()) return generateResponse(message: controller.messageResponse);
-    print(6);
     controller.applicationFormResponse
       ..toObject()
       ..toMap(); //reformat

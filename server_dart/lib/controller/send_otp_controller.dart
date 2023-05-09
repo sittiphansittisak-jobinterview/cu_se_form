@@ -15,6 +15,7 @@ class SendOtpController {
   final Request _request;
   final Mongodb _mongodb = Mongodb();
   final int _delayBeforeExpire = 5;
+  final int _otpLimitPerHalfDay = 100;
 
   //request
   final OtpObject _otpRequest = OtpObject();
@@ -35,11 +36,11 @@ class SendOtpController {
 
   Future<bool> validateRequest() async {
     if ((messageResponse = sendOtpRequestValidation(otp: _otpRequest)) != null) return messageResponse == null;
-    final DateTime beforeExpire5Min = DateTime.now().toUtc().subtract(Duration(minutes: _delayBeforeExpire));
+    final DateTime beforeExpire5Min = DateTime.now().toUtc().subtract(Duration(hours: 12));
     await _mongodb.openDb();
-    final int countBeforeExpire = await OtpModel.countBeforeExpire(_mongodb, email: _otpRequest.email!, expireAt: beforeExpire5Min);
+    final int countInHalfDay = await OtpModel.countBeforeBeforeCreate(_mongodb, email: _otpRequest.email!, createAt: beforeExpire5Min);
     await _mongodb.closeDb();
-    if (countBeforeExpire >= 3) return (messageResponse = 'มีการขอส่ง OTP มากเกินไป โปรดรอสักครู่แล้วลองอีกครั้ง') == null; //prevent spammer
+    if (countInHalfDay >= _otpLimitPerHalfDay) return (messageResponse = 'มีการขอส่ง OTP มากเกินไป โปรดรอสักครู่แล้วลองอีกครั้ง') == null; //prevent spammer
     return true;
   }
 
