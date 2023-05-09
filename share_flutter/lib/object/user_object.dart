@@ -18,7 +18,7 @@ class UserObject extends ObjectConverterAbstract {
     map = null;
     try {
       map = {
-        UserKey.id: id?.$oid,
+        UserKey.id: id,
         UserKey.createAt: createAt,
         UserKey.email: email,
       };
@@ -33,7 +33,7 @@ class UserObject extends ObjectConverterAbstract {
   bool toObject() {
     if (map == null) return false;
     try {
-      id = map![UserKey.id] == null ? null : ObjectId.parse(map![UserKey.id]);
+      id = map![UserKey.id] is String ? ObjectId.parse(map![UserKey.id]) : map![UserKey.id];
       createAt = map![UserKey.createAt] == null ? null : DateTime.tryParse(map![UserKey.createAt]);
       email = map![UserKey.email];
       return true;

@@ -30,7 +30,7 @@ class OtpObject extends ObjectConverterAbstract {
     map = null;
     try {
       map = {
-        OtpKey.id: id?.$oid,
+        OtpKey.id: id,
         OtpKey.createAt: createAt,
         OtpKey.expireAt: expireAt,
         OtpKey.email: email,
@@ -49,7 +49,7 @@ class OtpObject extends ObjectConverterAbstract {
   bool toObject() {
     if (map == null) return false;
     try {
-      id = map![OtpKey.id] == null ? null : ObjectId.parse(map![OtpKey.id]);
+      id = map![OtpKey.id] is String ? ObjectId.parse(map![OtpKey.id]) : map![OtpKey.id];
       createAt = map![OtpKey.createAt] == null ? null : DateTime.tryParse(map![OtpKey.createAt]);
       expireAt = map![OtpKey.expireAt] == null ? null : DateTime.tryParse(map![OtpKey.expireAt]);
       email = map![OtpKey.email];

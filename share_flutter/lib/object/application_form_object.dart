@@ -42,8 +42,8 @@ class ApplicationFormObject extends ObjectConverterAbstract {
     map = null;
     try {
       map = {
-        ApplicationFormKey.id: id?.$oid,
-        ApplicationFormKey.userId: userId?.$oid,
+        ApplicationFormKey.id: id,
+        ApplicationFormKey.userId: userId,
         ApplicationFormKey.name: name,
         ApplicationFormKey.surname: surname,
         ApplicationFormKey.studyType: studyType,
@@ -68,8 +68,8 @@ class ApplicationFormObject extends ObjectConverterAbstract {
   bool toObject() {
     if (map == null) return false;
     try {
-      id = map![ApplicationFormKey.id] == null ? null : ObjectId.parse(map![ApplicationFormKey.id]);
-      userId = map![ApplicationFormKey.userId] == null ? null : ObjectId.parse(map![ApplicationFormKey.userId]);
+      id = map![ApplicationFormKey.id] is String ? ObjectId.parse(map![ApplicationFormKey.id]) : map![ApplicationFormKey.id];
+      userId = map![ApplicationFormKey.userId] is String ? ObjectId.parse(map![ApplicationFormKey.userId]) : map![ApplicationFormKey.userId];
       name = map![ApplicationFormKey.name];
       surname = map![ApplicationFormKey.surname];
       studyType = map![ApplicationFormKey.studyType];
@@ -79,7 +79,7 @@ class ApplicationFormObject extends ObjectConverterAbstract {
             ..map = e
             ..toObject())
           .toList();
-      computerExperienceList = map![ApplicationFormKey.computerExperienceList]?.whereType<String?>().toList();
+      computerExperienceList = map![ApplicationFormKey.computerExperienceList]?.whereType<String>().toList();
       hasPublishedPaper = map![ApplicationFormKey.hasPublishedPaper];
       researchExperienceList = (map![ApplicationFormKey.researchExperienceList] as List?)
           ?.map((e) => ResearchExperienceObject()

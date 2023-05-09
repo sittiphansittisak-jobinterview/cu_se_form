@@ -18,7 +18,7 @@ class ResearchExperienceObject extends ObjectConverterAbstract {
     map = null;
     try {
       map = {
-        ResearchExperienceKey.id: id?.$oid,
+        ResearchExperienceKey.id: id,
         ResearchExperienceKey.paperTitle: paperTitle,
         ResearchExperienceKey.paperSource: paperSource,
       };
@@ -33,7 +33,7 @@ class ResearchExperienceObject extends ObjectConverterAbstract {
   bool toObject() {
     if (map == null) return false;
     try {
-      id = map![ResearchExperienceKey.id] == null ? null : ObjectId.parse(map![ResearchExperienceKey.id]);
+      id = map![ResearchExperienceKey.id] is String ? ObjectId.parse(map![ResearchExperienceKey.id]) : map![ResearchExperienceKey.id];
       paperTitle = map![ResearchExperienceKey.paperTitle];
       paperSource = map![ResearchExperienceKey.paperSource];
       return true;

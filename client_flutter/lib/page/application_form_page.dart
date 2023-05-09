@@ -3,6 +3,7 @@ import 'package:client_flutter/controller/get_application_form_controller.dart';
 import 'package:client_flutter/controller/send_otp_controller.dart';
 import 'package:client_flutter/path/page_path.dart';
 import 'package:client_flutter/private/complex_widget/app_bar_widget.dart';
+import 'package:client_flutter/private/complex_widget/drawer_widget.dart';
 import 'package:client_flutter/private/style/color_style.dart';
 import 'package:client_flutter/private/style/font_size_style.dart';
 import 'package:client_flutter/private/style/sized_box_style.dart';
@@ -30,6 +31,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
   final Rx<bool> _isApplicationFormLoading = Rx(false);
   final BoxConstraints _formWidth = const BoxConstraints(maxWidth: 210.0 * 2.83);
   final PreferredSizeWidget _appBarWidget = const AppBarWidget(url: PagePath.index);
+  final Widget _drawerWidget = const DrawerWidget();
   final Widget _titleWidget = const TextWidget(text: 'แบบฟอร์มประกอบการสมัครหลักสูตร SE', isBold: true, fontSize: FontSizeStyle.big);
   final Widget _subTitleWidget = const TextWidget(text: 'กรุณาใช้รหัส OTP ในการค้นหาหรือบันทึกแบบฟอร์ม โดยรหัส OTP มีอายุการใช้งาน 5 นาที', fontSize: FontSizeStyle.basic);
   final Widget _dividerWidget = const Divider(color: ColorStyle.primary);
@@ -57,6 +59,8 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
           errorMessage = _getApplicationFormController.receiveResponse();
           if (errorMessage != null) return await AwesomeDialogWidget.error(detail: errorMessage);
           if (_getApplicationFormController.api.message != null) await AwesomeDialogWidget.success(detail: _getApplicationFormController.api.message);
+          _applicationForm.map = (_getApplicationFormController.applicationFormResponse?..toMap())?.map;
+          _applicationForm.toObject();
         } finally {
           _isApplicationFormLoading.value = false;
         }
@@ -75,6 +79,7 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBarWidget,
+      endDrawer: _drawerWidget,
       body: SingleChildScrollView(
         padding: SpaceStyle.allBasic,
         child: Center(

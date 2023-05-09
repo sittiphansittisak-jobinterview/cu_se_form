@@ -28,7 +28,7 @@ class ProgrammingExperienceObject extends ObjectConverterAbstract {
     map = null;
     try {
       map = {
-        ProgrammingExperienceKey.id: id?.$oid,
+        ProgrammingExperienceKey.id: id,
         ProgrammingExperienceKey.language: language,
         ProgrammingExperienceKey.framework: framework,
         ProgrammingExperienceKey.tool: tool,
@@ -48,7 +48,7 @@ class ProgrammingExperienceObject extends ObjectConverterAbstract {
   bool toObject() {
     if (map == null) return false;
     try {
-      id = map![ProgrammingExperienceKey.id] == null ? null : ObjectId.parse(map![ProgrammingExperienceKey.id]);
+      id = map![ProgrammingExperienceKey.id] is String ? ObjectId.parse(map![ProgrammingExperienceKey.id]) : map![ProgrammingExperienceKey.id];
       language = map![ProgrammingExperienceKey.language];
       framework = map![ProgrammingExperienceKey.framework];
       tool = map![ProgrammingExperienceKey.tool];

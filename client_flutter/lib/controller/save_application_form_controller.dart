@@ -9,7 +9,7 @@ import 'package:share_flutter/private/path/api_path.dart';
 class SaveApplicationFormController {
   SaveApplicationFormController({required this.otpRequest, required this.applicationFormRequest});
 
-  final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.sendOtp);
+  final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.saveApplicationForm);
 
   //request
   final OtpObject otpRequest;
