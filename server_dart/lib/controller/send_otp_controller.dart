@@ -5,6 +5,7 @@ import 'package:server_dart/private/utility/generate_otp_value.dart';
 import 'package:server_dart/private/utility/request_to_api.dart';
 import 'package:server_dart/private/utility/send_email_function.dart';
 import 'package:share_flutter/setting/otp_type.dart';
+import 'package:share_flutter/utility/thai_date_time.dart';
 import 'package:shelf/shelf.dart';
 import 'package:share_flutter/object/otp_object.dart';
 import 'package:share_flutter/request_validation/send_otp_request_validation.dart';
@@ -14,6 +15,7 @@ class SendOtpController {
 
   final Request _request;
   final Mongodb _mongodb = Mongodb();
+  final int _delayBeforeExpire = 5;
 
   //request
   final OtpObject _otpRequest = OtpObject();
@@ -34,7 +36,7 @@ class SendOtpController {
 
   Future<bool> validateRequest() async {
     if ((messageResponse = sendOtpRequestValidation(otp: _otpRequest)) != null) return messageResponse == null;
-    final DateTime beforeExpire5Min = DateTime.now().toUtc().subtract(Duration(minutes: 5));
+    final DateTime beforeExpire5Min = DateTime.now().toUtc().subtract(Duration(minutes: _delayBeforeExpire));
     await _mongodb.openDb();
     final int countBeforeExpire = await OtpModel.countBeforeExpire(_mongodb, email: _otpRequest.email!, expireAt: beforeExpire5Min);
     await _mongodb.closeDb();
@@ -45,7 +47,7 @@ class SendOtpController {
   Future<bool> insertOtp() async {
     final DateTime now = DateTime.now().toUtc();
     _otpRequest.createAt = now;
-    _otpRequest.expireAt = now.add(Duration(minutes: 5));
+    _otpRequest.expireAt = now.add(Duration(minutes: _delayBeforeExpire));
     _otpRequest.isUsed = false;
     _otpRequest.otpRef = otpRefResponse = generateOtpRef();
     _otpRequest.otpValue = generateOtpValue();
@@ -68,7 +70,8 @@ class SendOtpController {
     final String subject = 'รหัส OTP';
     final String body = 'ใช้สำหรับยืนยันตัวตนเพื่อ${OtpType.toThai(_otpRequest.type)}'
         '\nรหัสอ้างอิง: ${_otpRequest.otpRef}'
-        '\nรหัส OTP: ${_otpRequest.otpValue}';
+        '\nรหัส OTP: ${_otpRequest.otpValue}'
+        '\nรหัสจะหมดอายุเมื่อ ${thaiDateTime(_otpRequest.expireAt) ?? '-'} (มีอายุการใช้งาน $_delayBeforeExpire นาที)';
     if (!await sendEmailFunction(emailTarget: _otpRequest.email, subject: subject, body: body)) return (messageResponse = 'ส่งอีเมลไม่สำเร็จ') == null;
     return true;
   }
