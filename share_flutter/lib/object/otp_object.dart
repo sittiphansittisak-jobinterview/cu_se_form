@@ -6,11 +6,11 @@ class OtpObject extends ObjectConverterAbstract {
   ObjectId? id;
   DateTime? createAt;
   DateTime? expireAt;
-  String? type;
   String? email;
   bool? isUsed;
   String? otpRef;
   String? otpValue;
+  String? note;
 
   bool get isExpired => (expireAt?.compareTo(DateTime.now().toUtc()) ?? 0) <= 0;
 
@@ -18,11 +18,11 @@ class OtpObject extends ObjectConverterAbstract {
     this.id,
     this.createAt,
     this.expireAt,
-    this.type,
     this.email,
     this.isUsed,
     this.otpRef,
     this.otpValue,
+    this.note,
   });
 
   @override
@@ -33,7 +33,6 @@ class OtpObject extends ObjectConverterAbstract {
         OtpKey.id: id?.$oid,
         OtpKey.createAt: createAt,
         OtpKey.expireAt: expireAt,
-        OtpKey.type: type,
         OtpKey.email: email,
         OtpKey.isUsed: isUsed,
         OtpKey.otpRef: otpRef,
@@ -53,7 +52,6 @@ class OtpObject extends ObjectConverterAbstract {
       id = map![OtpKey.id] == null ? null : ObjectId.parse(map![OtpKey.id]);
       createAt = map![OtpKey.createAt] == null ? null : DateTime.tryParse(map![OtpKey.createAt]);
       expireAt = map![OtpKey.expireAt] == null ? null : DateTime.tryParse(map![OtpKey.expireAt]);
-      type = map![OtpKey.type];
       email = map![OtpKey.email];
       isUsed = map![OtpKey.isUsed];
       otpRef = map![OtpKey.otpRef];

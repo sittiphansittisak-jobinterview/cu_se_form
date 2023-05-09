@@ -6,7 +6,6 @@ import 'package:server_dart/private/utility/request_to_api.dart';
 import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/user_object.dart';
 import 'package:share_flutter/request_validation/get_application_form_request_validation.dart';
-import 'package:share_flutter/utility/my_alert_message.dart';
 import 'package:shelf/shelf.dart';
 import 'package:share_flutter/object/otp_object.dart';
 
@@ -22,7 +21,6 @@ class GetApplicationFormController {
 
   //response
   String? messageResponse;
-  OtpObject otpResponse = OtpObject();
   ApplicationFormObject applicationFormResponse = ApplicationFormObject();
 
   Future<bool> receiveRequest() async {
@@ -40,19 +38,11 @@ class GetApplicationFormController {
     return true;
   }
 
-  Future<bool> findOtp() async {
-    await _mongodb.openDb();
-    otpResponse.map = await OtpModel.findOneByOtp(_mongodb, type: _otpRequest.type!, email: _otpRequest.email!, otpRef: _otpRequest.otpRef!);
-    await _mongodb.closeDb();
-    if (otpResponse.map == null) return (messageResponse = 'ไม่พบข้อมูล OTP') == null;
-    otpResponse.toObject();
-    return true;
-  }
-
   Future<bool> validateOtp() async {
-    if (otpResponse.isUsed == true) return (messageResponse = 'OTP นี้ถูกใช้แล้ว') == null;
-    if (otpResponse.isExpired) return (messageResponse = 'OTP หมดอายุแล้ว') == null;
-    if (otpResponse.otpValue != _otpRequest.otpValue) return (messageResponse = 'รหัส OTP ไม่ถูกต้อง') == null;
+    await _mongodb.openDb();
+    final bool isUpdated = await OtpModel.updateToUseOtp(_mongodb, email: _otpRequest.email!, otpRef: _otpRequest.otpRef!, otpValue: _otpRequest.otpValue!, expireAt: DateTime.now().toUtc());
+    await _mongodb.closeDb();
+    if (!isUpdated) return (messageResponse = 'OTP ไม่ถูกต้องหรือถูกใช้/หมดอายุแล้ว') == null;
     return true;
   }
 
@@ -60,7 +50,7 @@ class GetApplicationFormController {
     await _mongodb.openDb();
     _user.map = await UserModel.findOneByEmail(_mongodb, email: _otpRequest.email!);
     await _mongodb.closeDb();
-    if (_user.map == null) return (messageResponse = 'ไม่พบข้อมูลบัญชี/ใบงาน \n${MyAlertMessage.reportIssue}') == null; //No forms can exist if the user doesn't exist, since a form can only be created by a user
+    if (_user.map == null) return (messageResponse = 'ไม่พบข้อมูลบัญชี/ใบงาน') == null; //No forms can exist if the user doesn't exist, since a form can only be created by a user
     _user.toObject();
     return true;
   }
@@ -69,10 +59,7 @@ class GetApplicationFormController {
     await _mongodb.openDb();
     applicationFormResponse.map = await ApplicationFormModel.findOneByUserId(_mongodb, userId: _user.id!);
     await _mongodb.closeDb();
-    if (applicationFormResponse.map == null) return (messageResponse = 'ไม่พบข้อมูลบัญชี/ใบงาน \n${MyAlertMessage.reportIssue}') == null; //No forms can exist if the user doesn't exist, since a form can only be created by a user
-    applicationFormResponse
-      ..toObject()
-      ..toMap(); //reformat
+    if (applicationFormResponse.map == null) return (messageResponse = 'ไม่พบข้อมูลใบงาน') == null;
     return true;
   }
 

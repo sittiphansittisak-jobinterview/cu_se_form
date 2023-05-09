@@ -6,6 +6,7 @@ import 'package:client_flutter/private/style/space_style.dart';
 import 'package:client_flutter/private/widget/button/dense_button_widget.dart';
 import 'package:client_flutter/private/widget/card/form_card_widget.dart';
 import 'package:client_flutter/private/widget/dialog/awesome_dialog_widget.dart';
+import 'package:client_flutter/private/widget/field/dropdown_search_field_widget.dart';
 import 'package:client_flutter/private/widget/field/email_field_widget.dart';
 import 'package:client_flutter/private/widget/field/text_field_widget.dart';
 import 'package:client_flutter/private/widget/text/text_widget.dart';

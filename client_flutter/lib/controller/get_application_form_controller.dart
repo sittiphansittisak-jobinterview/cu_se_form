@@ -10,7 +10,7 @@ import 'package:share_flutter/private/path/api_path.dart';
 class GetApplicationFormController {
   GetApplicationFormController({required this.otpRequest});
 
-  final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.saveApplicationForm);
+  final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.getApplicationForm);
 
   //request
   final OtpObject otpRequest;

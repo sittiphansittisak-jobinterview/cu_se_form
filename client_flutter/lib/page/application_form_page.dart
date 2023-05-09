@@ -17,7 +17,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_flutter/object/application_form_object.dart';
 import 'package:share_flutter/object/otp_object.dart';
-import 'package:share_flutter/setting/otp_type.dart';
 
 class ApplicationFormPage extends StatefulWidget {
   const ApplicationFormPage({Key? key}) : super(key: key);
@@ -35,6 +34,17 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
   final Widget _subTitleWidget = const TextWidget(text: 'กรุณาใช้รหัส OTP ในการค้นหาหรือบันทึกแบบฟอร์ม โดยรหัส OTP มีอายุการใช้งาน 5 นาที', fontSize: FontSizeStyle.basic);
   final Widget _dividerWidget = const Divider(color: ColorStyle.primary);
   final Widget _loadingWidget = const CircularLoadingWidget(title: 'กำลังดำเนินการ....');
+
+  //controller
+  final OtpObject _otp = OtpObject();
+  final ApplicationFormObject _applicationForm = ApplicationFormObject();
+  late final SendOtpController _sendOtpController = SendOtpController(otpRequest: _otp);
+  late final GetApplicationFormController _getApplicationFormController = GetApplicationFormController(otpRequest: _otp);
+  late final SaveApplicationFormController _saveApplicationFormController = SaveApplicationFormController(otpRequest: _otp, applicationFormRequest: _applicationForm);
+
+  //view
+  late final SendOtpView _sendOtpView = SendOtpView(controller: _sendOtpController);
+  late final ApplicationFormView _applicationFormView = ApplicationFormView(isWrite: true, applicationForm: _applicationForm);
   late final Widget _getApplicationFormButtonWidget = DenseButtonWidget(
       text: 'ค้นหาแบบฟอร์ม',
       onClick: () async {
@@ -60,17 +70,6 @@ class _ApplicationFormPageState extends State<ApplicationFormPage> {
         if (!await _saveApplicationFormController.sendRequest()) return await AwesomeDialogWidget.failed(detail: _saveApplicationFormController.api.message);
         await AwesomeDialogWidget.success(title: 'บันทึกข้อมูลสำเร็จ', detail: _saveApplicationFormController.api.message);
       });
-
-  //controller
-  final OtpObject _otp = OtpObject(type: OtpType.saveApplicationForm);
-  final ApplicationFormObject _applicationForm = ApplicationFormObject();
-  late final SendOtpController _sendOtpController = SendOtpController(otpType: _otp.type!, otpRequest: _otp);
-  late final GetApplicationFormController _getApplicationFormController = GetApplicationFormController(otpRequest: _otp);
-  late final SaveApplicationFormController _saveApplicationFormController = SaveApplicationFormController(otpRequest: _otp, applicationFormRequest: _applicationForm);
-
-  //view
-  late final SendOtpView _sendOtpView = SendOtpView(controller: _sendOtpController);
-  late final ApplicationFormView _applicationFormView = ApplicationFormView(isWrite: true, applicationForm: _applicationForm);
 
   @override
   Widget build(BuildContext context) {

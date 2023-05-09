@@ -7,15 +7,15 @@ import 'package:shelf/shelf.dart';
 Future<Response> sendOtpApi(Request request) async {
   final SendOtpController controller = SendOtpController(request: request);
   try {
-    if (!await controller.receiveRequest()) return generateResponse(httpStatus: HttpStatus.badRequest, isSuccess: false, message: controller.messageResponse);
-    if (!await controller.validateRequest()) return generateResponse(httpStatus: HttpStatus.badRequest, isSuccess: false, message: controller.messageResponse);
-    if (!await controller.insertOtp()) return generateResponse(httpStatus: HttpStatus.internalServerError, isSuccess: false, message: controller.messageResponse);
+    if (!await controller.receiveRequest()) return generateResponse(message: controller.messageResponse);
+    if (!await controller.validateRequest()) return generateResponse(message: controller.messageResponse);
+    if (!await controller.insertOtp()) return generateResponse(httpStatus: HttpStatus.internalServerError, message: controller.messageResponse);
     if (!await controller.sendEmail()) {
-      if (!await controller.insertOtpCancel()) return generateResponse(httpStatus: HttpStatus.internalServerError, isSuccess: false, message: 'เพิ่มข้อมูล OTP ลงในระบบแล้ว แต่ส่งอีเมลไม่สำเร็จ กรุณาตรวจสอบอีเมล'); //worst case
-      return generateResponse(httpStatus: HttpStatus.internalServerError, isSuccess: false, message: controller.messageResponse);
+      if (!await controller.insertOtpCancel()) return generateResponse(httpStatus: HttpStatus.internalServerError, message: 'เพิ่มข้อมูล OTP ลงในระบบแล้ว แต่ส่งอีเมลไม่สำเร็จ กรุณาตรวจสอบอีเมล'); //worst case
+      return generateResponse(httpStatus: HttpStatus.internalServerError, message: controller.messageResponse);
     }
-    return generateResponse(httpStatus: HttpStatus.ok, isSuccess: true, data: {'otpRef': controller.otpRefResponse});
+    return generateResponse(httpStatus: HttpStatus.ok, isSuccess: true, data: {'otpRef': controller.otpRefResponse}, message: 'ระบบได้ส่งรหัส OTP ไปยังอีเมลดังกล่าวแล้ว หากไม่ได้รับอีเมลกรุณาตรวจสอบอีเมลและลองใหม่อีกครั้ง');
   } catch (e) {
-    return generateResponse(httpStatus: HttpStatus.internalServerError, isSuccess: false, message: '$e\n${MyAlertMessage.reportIssue}');
+    return generateResponse(httpStatus: HttpStatus.internalServerError, message: '$e\n${MyAlertMessage.reportIssue}');
   }
 }

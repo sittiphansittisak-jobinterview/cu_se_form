@@ -7,22 +7,21 @@ import 'package:share_flutter/private/object/api_object.dart';
 import 'package:share_flutter/private/path/api_path.dart';
 
 class SendOtpController {
-  SendOtpController({required String otpType, required this.otpRequest}) : _otpTypeRequest = otpType;
+  SendOtpController({required this.otpRequest});
 
   final ApiObject api = ApiObject(url: ApiPath.root + ApiPath.sendOtp);
 
   //request
-  final String _otpTypeRequest;
   final OtpObject otpRequest;
 
   //response
   String? otpRefResponse;
 
-  String? validateRequest() => sendOtpRequestValidation(otp: otpRequest..type = _otpTypeRequest);
+  String? validateRequest() => sendOtpRequestValidation(otp: otpRequest);
 
   Future<bool> sendRequest() async {
     if (!otpRequest.toMap()) return false;
-    otpRequest.map = mapFilter(otpRequest.map, allowKey: [OtpKey.type, OtpKey.email]);
+    otpRequest.map = mapFilter(otpRequest.map, allowKey: [OtpKey.email]);
     if (otpRequest.map == null) return false;
     api.parameterBody.addAll({'otp': otpRequest.map});
     if (!await api.sendPostFormDataRequest()) return false;
@@ -33,7 +32,7 @@ class SendOtpController {
     otpRefResponse = null;
     final otpRef = api.data?['otpRef'];
     if (otpRef is! String) return 'ข้อมูลที่ได้รับจากเซิฟเวอร์ไม่ถูกต้อง ${MyAlertMessage.reportIssue}';
-    otpRefResponse = otpRef;
+    otpRefResponse = otpRequest.otpRef = otpRef;
     return null;
   }
 }

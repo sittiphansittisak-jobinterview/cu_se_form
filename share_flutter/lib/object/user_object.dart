@@ -4,10 +4,12 @@ import 'package:share_flutter/object/key/user_key.dart';
 
 class UserObject extends ObjectConverterAbstract {
   ObjectId? id;
+  DateTime? createAt;
   String? email;
 
   UserObject({
     this.id,
+    this.createAt,
     this.email,
   });
 
@@ -17,6 +19,7 @@ class UserObject extends ObjectConverterAbstract {
     try {
       map = {
         UserKey.id: id?.$oid,
+        UserKey.createAt: createAt,
         UserKey.email: email,
       };
       map!.removeWhere((key, value) => value == null);
@@ -31,6 +34,7 @@ class UserObject extends ObjectConverterAbstract {
     if (map == null) return false;
     try {
       id = map![UserKey.id] == null ? null : ObjectId.parse(map![UserKey.id]);
+      createAt = map![UserKey.createAt] == null ? null : DateTime.tryParse(map![UserKey.createAt]);
       email = map![UserKey.email];
       return true;
     } catch (_) {

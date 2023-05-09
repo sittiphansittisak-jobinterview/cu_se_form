@@ -18,4 +18,9 @@ class OtpModel {
     if (!writeResult.isSuccess || writeResult.nRemoved != 1) return false;
     return true;
   }
+
+  static Future<bool> updateToUseOtp(Mongodb mongodb, {required String email, required String otpRef, required String otpValue, required DateTime expireAt}) async {
+    final WriteResult writeResult = await mongodb.otpCollection.updateOne(where.eq(OtpKey.email, email).eq(OtpKey.otpRef, otpRef).eq(OtpKey.otpValue, otpValue).eq(OtpKey.isUsed, false).gt(OtpKey.expireAt, expireAt), modify.set(OtpKey.isUsed, true));
+    return writeResult.isSuccess && writeResult.nModified == 1;
+  }
 }
