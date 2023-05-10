@@ -49,7 +49,7 @@ class SendOtpController {
     _otpRequest.isUsed = false;
     otpRefResponse = (_otpRequest..generateOtpRef()).otpRef;
     _otpRequest.generateOtpValue();
-    if (!_otpRequest.toMap()) return (messageResponse = 'เกิดข้อผิดพลาดระหว่างเตรียมข้อมูลสำหรับบันทึก OTP') == null;
+    _otpRequest.toMap();
     await _mongodb.openDb();
     _otpRequest.id = await OtpModel.insertOne(_mongodb, map: _otpRequest.map!);
     await _mongodb.closeDb();

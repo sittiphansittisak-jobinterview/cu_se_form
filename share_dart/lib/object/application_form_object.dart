@@ -38,30 +38,25 @@ class ApplicationFormObject extends ObjectConverterAbstract {
   });
 
   @override
-  bool toMap() {
+  void toMap() {
     map = null;
-    try {
-      map = {
-        ApplicationFormKey.id: id,
-        ApplicationFormKey.userId: userId,
-        ApplicationFormKey.name: name,
-        ApplicationFormKey.surname: surname,
-        ApplicationFormKey.studyType: studyType,
-        ApplicationFormKey.studyPlan: studyPlan,
-        ApplicationFormKey.programmingExperienceList: programmingExperienceList?.map((e) => (e..toMap()).map).whereType<Map<String, dynamic>>().toList(),
-        ApplicationFormKey.computerExperienceList: computerExperienceList,
-        ApplicationFormKey.hasPublishedPaper: hasPublishedPaper,
-        ApplicationFormKey.researchExperienceList: researchExperienceList?.map((e) => (e..toMap()).map).whereType<Map<String, dynamic>>().toList(),
-        ApplicationFormKey.experienceDescription: experienceDescription,
-        ApplicationFormKey.computerLearningExperienceList: computerLearningExperienceList,
-        ApplicationFormKey.researchInterests: researchInterests,
-        ApplicationFormKey.proposedResearchMethodologyList: proposedResearchMethodologyList,
-      };
-      map!.removeWhere((key, value) => value == null);
-      return true;
-    } catch (_) {
-      return false;
-    }
+    map = {
+      ApplicationFormKey.id: id,
+      ApplicationFormKey.userId: userId,
+      ApplicationFormKey.name: name,
+      ApplicationFormKey.surname: surname,
+      ApplicationFormKey.studyType: studyType,
+      ApplicationFormKey.studyPlan: studyPlan,
+      ApplicationFormKey.programmingExperienceList: programmingExperienceList?.map((e) => (e..toMap()).map).whereType<Map<String, dynamic>>().toList(),
+      ApplicationFormKey.computerExperienceList: computerExperienceList,
+      ApplicationFormKey.hasPublishedPaper: hasPublishedPaper,
+      ApplicationFormKey.researchExperienceList: researchExperienceList?.map((e) => (e..toMap()).map).whereType<Map<String, dynamic>>().toList(),
+      ApplicationFormKey.experienceDescription: experienceDescription,
+      ApplicationFormKey.computerLearningExperienceList: computerLearningExperienceList,
+      ApplicationFormKey.researchInterests: researchInterests,
+      ApplicationFormKey.proposedResearchMethodologyList: proposedResearchMethodologyList,
+    };
+    map!.removeWhere((key, value) => value == null);
   }
 
   @override

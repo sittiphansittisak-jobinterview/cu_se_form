@@ -1,7 +1,7 @@
 abstract class ObjectConverterAbstract {
   Map<String, dynamic>? map;
 
-  bool toMap();
+  void toMap();
 
   bool toObject();
 }

@@ -26,7 +26,7 @@ class SendOtpController {
   String? validateRequest() => sendOtpRequestValidation(otp: otpRequest);
 
   Future<bool> sendRequest() async {
-    if (!otpRequest.toMap()) return false;
+    otpRequest.toMap();
     otpRequest.map = mapFilter(otpRequest.map, allowKey: [OtpKey.email]);
     if (otpRequest.map == null) return false;
     api.parameterBody.addAll({'otp': otpRequest.map});

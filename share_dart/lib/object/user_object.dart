@@ -14,19 +14,14 @@ class UserObject extends ObjectConverterAbstract {
   });
 
   @override
-  bool toMap() {
+  void toMap() {
     map = null;
-    try {
-      map = {
-        UserKey.id: id,
-        UserKey.createAt: createAt,
-        UserKey.email: email,
-      };
-      map!.removeWhere((key, value) => value == null);
-      return true;
-    } catch (_) {
-      return false;
-    }
+    map = {
+      UserKey.id: id,
+      UserKey.createAt: createAt,
+      UserKey.email: email,
+    };
+    map!.removeWhere((key, value) => value == null);
   }
 
   @override

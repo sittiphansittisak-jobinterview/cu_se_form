@@ -14,19 +14,14 @@ class ResearchExperienceObject extends ObjectConverterAbstract {
   });
 
   @override
-  bool toMap() {
+  void toMap() {
     map = null;
-    try {
-      map = {
-        ResearchExperienceKey.id: id,
-        ResearchExperienceKey.paperTitle: paperTitle,
-        ResearchExperienceKey.paperSource: paperSource,
-      };
-      map!.removeWhere((key, value) => value == null);
-      return true;
-    } catch (_) {
-      return false;
-    }
+    map = {
+      ResearchExperienceKey.id: id,
+      ResearchExperienceKey.paperTitle: paperTitle,
+      ResearchExperienceKey.paperSource: paperSource,
+    };
+    map!.removeWhere((key, value) => value == null);
   }
 
   @override

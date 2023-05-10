@@ -24,24 +24,19 @@ class ProgrammingExperienceObject extends ObjectConverterAbstract {
   });
 
   @override
-  bool toMap() {
+  void toMap() {
     map = null;
-    try {
-      map = {
-        ProgrammingExperienceKey.id: id,
-        ProgrammingExperienceKey.language: language,
-        ProgrammingExperienceKey.framework: framework,
-        ProgrammingExperienceKey.tool: tool,
-        ProgrammingExperienceKey.environment: environment,
-        ProgrammingExperienceKey.duration: duration,
-        ProgrammingExperienceKey.mostLinesOfCode: mostLinesOfCode,
-        ProgrammingExperienceKey.description: description,
-      };
-      map!.removeWhere((key, value) => value == null);
-      return true;
-    } catch (_) {
-      return false;
-    }
+    map = {
+      ProgrammingExperienceKey.id: id,
+      ProgrammingExperienceKey.language: language,
+      ProgrammingExperienceKey.framework: framework,
+      ProgrammingExperienceKey.tool: tool,
+      ProgrammingExperienceKey.environment: environment,
+      ProgrammingExperienceKey.duration: duration,
+      ProgrammingExperienceKey.mostLinesOfCode: mostLinesOfCode,
+      ProgrammingExperienceKey.description: description,
+    };
+    map!.removeWhere((key, value) => value == null);
   }
 
   @override

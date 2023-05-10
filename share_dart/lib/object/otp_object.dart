@@ -54,23 +54,18 @@ class OtpObject extends ObjectConverterAbstract {
   });
 
   @override
-  bool toMap() {
+  void toMap() {
     map = null;
-    try {
-      map = {
-        OtpKey.id: id,
-        OtpKey.createAt: createAt,
-        OtpKey.expireAt: expireAt,
-        OtpKey.email: email,
-        OtpKey.isUsed: isUsed,
-        OtpKey.otpRef: otpRef,
-        OtpKey.otpValue: otpValue,
-      };
-      map!.removeWhere((key, value) => value == null);
-      return true;
-    } catch (_) {
-      return false;
-    }
+    map = {
+      OtpKey.id: id,
+      OtpKey.createAt: createAt,
+      OtpKey.expireAt: expireAt,
+      OtpKey.email: email,
+      OtpKey.isUsed: isUsed,
+      OtpKey.otpRef: otpRef,
+      OtpKey.otpValue: otpValue,
+    };
+    map!.removeWhere((key, value) => value == null);
   }
 
   @override
