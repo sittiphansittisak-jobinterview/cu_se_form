@@ -32,8 +32,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  share_flutter:
-    path: ../share_flutter
+  share_dart:
+    path: ../share_dart
 
 
   # The following adds the Cupertino Icons font to your application.

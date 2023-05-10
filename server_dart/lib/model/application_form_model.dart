@@ -1,6 +1,6 @@
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
-import 'package:share_flutter/object/key/application_form_key.dart';
+import 'package:share_dart/object/key/application_form_key.dart';
 
 class ApplicationFormModel {
   static Future<bool> replaceOneByUserId(Mongodb mongodb, {required ObjectId userId, required Map<String, dynamic> map}) async {

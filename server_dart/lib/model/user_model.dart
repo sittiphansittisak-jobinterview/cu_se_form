@@ -1,6 +1,6 @@
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
-import 'package:share_flutter/object/key/user_key.dart';
+import 'package:share_dart/object/key/user_key.dart';
 
 class UserModel {
   static Future<ObjectId?> insertOne(Mongodb mongodb, {required Map<String, dynamic> map}) async {

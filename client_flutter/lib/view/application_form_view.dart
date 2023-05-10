@@ -7,11 +7,11 @@ import 'package:client_flutter/private/widget/field/text_area_field_widget.dart'
 import 'package:client_flutter/private/widget/field/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_flutter/object/application_form_object.dart';
-import 'package:share_flutter/object/programming_experience_object.dart';
-import 'package:share_flutter/object/research_experience_object.dart';
-import 'package:share_flutter/setting/study_plan.dart';
-import 'package:share_flutter/setting/study_type.dart';
+import 'package:share_dart/object/application_form_object.dart';
+import 'package:share_dart/object/programming_experience_object.dart';
+import 'package:share_dart/object/research_experience_object.dart';
+import 'package:share_dart/setting/study_plan.dart';
+import 'package:share_dart/setting/study_type.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 class ApplicationFormView extends StatelessWidget {

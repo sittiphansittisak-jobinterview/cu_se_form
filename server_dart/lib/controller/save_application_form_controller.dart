@@ -4,13 +4,13 @@ import 'package:server_dart/model/user_model.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
 import 'package:server_dart/private/utility/request_to_api.dart';
 import 'package:server_dart/private/utility/send_email.dart';
-import 'package:share_flutter/object/application_form_object.dart';
-import 'package:share_flutter/object/user_object.dart';
-import 'package:share_flutter/request_validation/save_application_form_request_validation.dart';
-import 'package:share_flutter/utility/my_alert_message.dart';
-import 'package:share_flutter/utility/thai_date_time.dart';
+import 'package:share_dart/object/application_form_object.dart';
+import 'package:share_dart/object/user_object.dart';
+import 'package:share_dart/request_validation/save_application_form_request_validation.dart';
+import 'package:share_dart/utility/my_alert_message.dart';
+import 'package:share_dart/utility/thai_date_time.dart';
 import 'package:shelf/shelf.dart';
-import 'package:share_flutter/object/otp_object.dart';
+import 'package:share_dart/object/otp_object.dart';
 
 class SaveApplicationFormController {
   SaveApplicationFormController({required Request request}) : _request = request;
@@ -82,8 +82,8 @@ class SaveApplicationFormController {
 
   Future<bool> sendEmailToNewUser() async {
     final String subject = 'สมาชิกใหม่';
-    final String body = 'ยินดีต้อนรับสมาชิกใหม่เข้าสู่ CU SE FORM'
-        '\nเราพบว่าคุณพึ่งเข้าร่วม CU SE FORM เมื่อ ${thaiDateTime(_user.createAt) ?? '-'}'
+    final String body = 'ยินดีต้อนรับสมาชิกใหม่เข้าสู่ CU SE form'
+        '\nเราพบว่าคุณพึ่งเข้าร่วม CU SE form เมื่อ ${thaiDateTime(_user.createAt) ?? '-'}'
         '\n\n*****หากนี่ไม่ใช่คุณ ${MyAlertMessage.reportIssue}*****';
     if (!await sendEmail(emailTarget: _otpRequest.email, subject: subject, body: body)) return (messageResponse = 'ส่งอีเมลแจ้งการเป็นสมาชิกใหม่ไม่สำเร็จ') == null;
     return true;

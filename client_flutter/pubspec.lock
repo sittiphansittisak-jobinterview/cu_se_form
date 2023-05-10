@@ -717,13 +717,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  share_flutter:
+  share_dart:
     dependency: "direct main"
     description:
-      path: "../share_flutter"
+      path: "../share_dart"
       relative: true
     source: path
-    version: "1.0.0+1"
+    version: "1.0.0"
   shared_preferences:
     dependency: "direct main"
     description:

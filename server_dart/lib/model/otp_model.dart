@@ -1,6 +1,6 @@
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
-import 'package:share_flutter/object/key/otp_key.dart';
+import 'package:share_dart/object/key/otp_key.dart';
 
 class OtpModel {
   static Future<int> countBeforeBeforeCreate(Mongodb mongodb, {required String email, required DateTime createAt}) async {

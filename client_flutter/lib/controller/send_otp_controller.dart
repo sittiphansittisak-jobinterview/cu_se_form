@@ -1,12 +1,12 @@
 import 'package:client_flutter/model/email_model.dart';
-import 'package:share_flutter/object/key/otp_key.dart';
-import 'package:share_flutter/private/utility/map_filter.dart';
-import 'package:share_flutter/request_validation/send_otp_request_validation.dart';
-import 'package:share_flutter/utility/delay_future_function.dart';
-import 'package:share_flutter/utility/my_alert_message.dart';
-import 'package:share_flutter/object/otp_object.dart';
-import 'package:share_flutter/private/object/api_object.dart';
-import 'package:share_flutter/private/path/api_path.dart';
+import 'package:share_dart/object/key/otp_key.dart';
+import 'package:share_dart/private/utility/map_filter.dart';
+import 'package:share_dart/request_validation/send_otp_request_validation.dart';
+import 'package:share_dart/utility/delay_future_function.dart';
+import 'package:share_dart/utility/my_alert_message.dart';
+import 'package:share_dart/object/otp_object.dart';
+import 'package:share_dart/private/object/api_object.dart';
+import 'package:share_dart/private/path/api_path.dart';
 
 class SendOtpController {
   SendOtpController({required this.otpRequest});

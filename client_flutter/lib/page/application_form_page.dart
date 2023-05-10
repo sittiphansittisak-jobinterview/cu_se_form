@@ -16,8 +16,8 @@ import 'package:client_flutter/view/application_form_view.dart';
 import 'package:client_flutter/view/send_otp_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_flutter/object/application_form_object.dart';
-import 'package:share_flutter/object/otp_object.dart';
+import 'package:share_dart/object/application_form_object.dart';
+import 'package:share_dart/object/otp_object.dart';
 
 class ApplicationFormPage extends StatefulWidget {
   const ApplicationFormPage({Key? key}) : super(key: key);
