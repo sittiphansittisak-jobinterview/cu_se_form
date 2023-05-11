@@ -17,6 +17,9 @@
       <excludeFolder url="file://$MODULE_DIR$/server_dart/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/server_dart/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/server_dart/build" />
+      <excludeFolder url="file://$MODULE_DIR$/share_dart/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/share_dart/build" />
+      <excludeFolder url="file://$MODULE_DIR$/share_dart/.pub" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

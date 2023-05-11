@@ -1,16 +1,15 @@
 import 'package:server_dart/model/otp_model.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
-import 'package:server_dart/private/utility/request_to_api.dart';
 import 'package:server_dart/private/utility/send_email.dart';
+import 'package:share_dart/private/object/api_object.dart';
 import 'package:share_dart/utility/thai_date_time.dart';
-import 'package:shelf/shelf.dart';
 import 'package:share_dart/object/otp_object.dart';
 import 'package:share_dart/request_validation/send_otp_request_validation.dart';
 
 class SendOtpController {
-  SendOtpController({required Request request}) : _request = request;
+  SendOtpController({required ApiObject? api}) : _api = api;
 
-  final Request _request;
+  final ApiObject? _api;
   final Mongodb _mongodb = Mongodb();
   final int _delayBeforeExpire = 5;
   final int _otpLimitPerHalfDay = 100;
@@ -23,9 +22,8 @@ class SendOtpController {
   String? otpRefResponse;
 
   Future<bool> receiveRequest() async {
-    final api = await requestToApi(_request);
-    if (api == null) return false;
-    final otpMap = api.data?['otp'];
+    if (_api == null) return false;
+    final otpMap = _api!.data?['otp'];
     if (otpMap is! Map<String, dynamic>) return false;
     _otpRequest.map = otpMap;
     if (!_otpRequest.toObject()) return false;

@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:server_dart/controller/save_application_form_controller.dart';
 import 'package:server_dart/private/utility/generate_respone.dart';
+import 'package:share_dart/private/object/api_object.dart';
 import 'package:share_dart/utility/my_alert_message.dart';
 import 'package:shelf/shelf.dart';
 
-Future<Response> saveApplicationFormApi(Request request) async {
-  final SaveApplicationFormController controller = SaveApplicationFormController(request: request);
+Future<Response> saveApplicationFormApi(ApiObject? api) async {
+  final SaveApplicationFormController controller = SaveApplicationFormController(api: api);
   bool? isSendEmailSuccess;
   try {
     if (!await controller.receiveRequest()) return generateResponse(message: 'ข้อมูลที่ได้รับไม่ถูกต้อง');

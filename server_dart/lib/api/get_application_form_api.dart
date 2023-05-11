@@ -2,12 +2,13 @@ import 'dart:io';
 import 'package:server_dart/controller/get_application_form_controller.dart';
 import 'package:server_dart/private/utility/generate_respone.dart';
 import 'package:share_dart/object/key/application_form_key.dart';
+import 'package:share_dart/private/object/api_object.dart';
 import 'package:share_dart/private/utility/map_filter.dart';
 import 'package:share_dart/utility/my_alert_message.dart';
 import 'package:shelf/shelf.dart';
 
-Future<Response> getApplicationFormApi(Request request) async {
-  final GetApplicationFormController controller = GetApplicationFormController(request: request);
+Future<Response> getApplicationFormApi(ApiObject? api) async {
+  final GetApplicationFormController controller = GetApplicationFormController(api: api);
   try {
     if (!await controller.receiveRequest()) return generateResponse(message: 'ข้อมูลที่ได้รับไม่ถูกต้อง');
     if (!await controller.validateRequest()) return generateResponse(message: controller.messageResponse);

@@ -2,20 +2,19 @@ import 'package:server_dart/model/application_form_model.dart';
 import 'package:server_dart/model/otp_model.dart';
 import 'package:server_dart/model/user_model.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
-import 'package:server_dart/private/utility/request_to_api.dart';
 import 'package:server_dart/private/utility/send_email.dart';
 import 'package:share_dart/object/application_form_object.dart';
 import 'package:share_dart/object/user_object.dart';
+import 'package:share_dart/private/object/api_object.dart';
 import 'package:share_dart/request_validation/save_application_form_request_validation.dart';
 import 'package:share_dart/utility/my_alert_message.dart';
 import 'package:share_dart/utility/thai_date_time.dart';
-import 'package:shelf/shelf.dart';
 import 'package:share_dart/object/otp_object.dart';
 
 class SaveApplicationFormController {
-  SaveApplicationFormController({required Request request}) : _request = request;
+  SaveApplicationFormController({required ApiObject? api}) : _api = api;
 
-  final Request _request;
+  final ApiObject? _api;
   final Mongodb _mongodb = Mongodb();
   final UserObject _user = UserObject();
 
@@ -27,10 +26,9 @@ class SaveApplicationFormController {
   String? messageResponse;
 
   Future<bool> receiveRequest() async {
-    final api = await requestToApi(_request);
-    if (api == null) return false;
-    final otpMap = api.data?['otp'];
-    final applicationFormMap = api.data?['applicationForm'];
+    if (_api == null) return false;
+    final otpMap = _api!.data?['otp'];
+    final applicationFormMap = _api!.data?['applicationForm'];
     if (otpMap is! Map<String, dynamic>) return false;
     if (applicationFormMap is! Map<String, dynamic>) return false;
     _otpRequest.map = otpMap;

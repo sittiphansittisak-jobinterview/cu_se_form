@@ -2,17 +2,16 @@ import 'package:server_dart/model/application_form_model.dart';
 import 'package:server_dart/model/otp_model.dart';
 import 'package:server_dart/model/user_model.dart';
 import 'package:server_dart/private/setting/mongodb.dart';
-import 'package:server_dart/private/utility/request_to_api.dart';
 import 'package:share_dart/object/application_form_object.dart';
 import 'package:share_dart/object/user_object.dart';
+import 'package:share_dart/private/object/api_object.dart';
 import 'package:share_dart/request_validation/get_application_form_request_validation.dart';
-import 'package:shelf/shelf.dart';
 import 'package:share_dart/object/otp_object.dart';
 
 class GetApplicationFormController {
-  GetApplicationFormController({required Request request}) : _request = request;
+  GetApplicationFormController({required ApiObject? api}) : _api = api;
 
-  final Request _request;
+  final ApiObject? _api;
   final Mongodb _mongodb = Mongodb();
   final UserObject _user = UserObject();
 
@@ -24,9 +23,8 @@ class GetApplicationFormController {
   ApplicationFormObject applicationFormResponse = ApplicationFormObject();
 
   Future<bool> receiveRequest() async {
-    final api = await requestToApi(_request);
-    if (api == null) return false;
-    final otpMap = api.data?['otp'];
+    if (_api == null) return false;
+    final otpMap = _api!.data?['otp'];
     if (otpMap is! Map<String, dynamic>) return false;
     _otpRequest.map = otpMap;
     if (!_otpRequest.toObject()) return false;

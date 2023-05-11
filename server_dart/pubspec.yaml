@@ -26,6 +26,7 @@ dependencies:
   mailer: ^6.0.0
   synchronized: ^3.0.1
   pdf: ^3.10.1
+  shelf_cors_headers: ^0.1.4
 
 dev_dependencies:
   lints: ^2.0.0

@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'package:server_dart/controller/send_otp_controller.dart';
 import 'package:server_dart/private/utility/generate_respone.dart';
+import 'package:share_dart/private/object/api_object.dart';
 import 'package:share_dart/utility/my_alert_message.dart';
 import 'package:shelf/shelf.dart';
 
-Future<Response> sendOtpApi(Request request) async {
-  final SendOtpController controller = SendOtpController(request: request);
+Future<Response> sendOtpApi(ApiObject? api) async {
+  final SendOtpController controller = SendOtpController(api: api);
   try {
     if (!await controller.receiveRequest()) return generateResponse(message: 'ข้อมูลที่ได้รับไม่ถูกต้อง');
     if (!await controller.validateRequest()) return generateResponse(message: controller.messageResponse);
